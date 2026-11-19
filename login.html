@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in — {{BUSINESS_NAME}}</title>
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.signin { max-width: 440px; margin: 0 auto; }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; background: var(--bg); border: 1px solid var(--line); border-radius: 12px; margin: 18px 0 20px; }
+.tabs button { border: 0; background: transparent; color: var(--muted); font: inherit; font-weight: 700; padding: 9px; border-radius: 9px; cursor: pointer; }
+.tabs button[aria-selected="true"] { background: var(--grad); color: #fff; box-shadow: var(--shadow-brand); }
+input:focus { box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 15%, transparent); }
+.signin h1 { text-align: center; }
+.signin .updated { text-align: center; }
+label { display: block; font-weight: 600; font-size: .92rem; margin: 12px 0 5px; }
+input { width: 100%; font: inherit; padding: 11px 13px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+input:focus { outline: 2px solid var(--brand); border-color: var(--brand); }
+.code { text-transform: lowercase; letter-spacing: .04em; }
+.btn { width: 100%; margin-top: 18px; font-size: 1rem; cursor: pointer; }
+.btn:disabled { opacity: .7; cursor: wait; }
+.err { background: #fde8e8; color: #8a1c1c; border-radius: 10px; padding: 9px 12px; font-size: .92rem; margin-top: 14px; }
+.hint { color: var(--muted); font-size: .9rem; margin-top: 16px; text-align: center; }
+.pw { position: relative; }
+.pw button { position: absolute; right: 6px; top: 50%; transform: translateY(-50%); border: 0; background: transparent; color: var(--muted); font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; padding: 6px 8px; }
+</style>
+</head>
+<body>
+<header class="top"><div class="top-inner">
+  <a class="logo" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2563eb"/><path d="M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z" fill="#fbbf24"/></svg>{{BUSINESS_NAME}}</a>
+  <a href="/#pricing">Pricing</a>
+</div></header>
+
+<main class="page">
+  <div class="card signin">
+    <h1>Sign in</h1>
+    <p class="updated" id="lead">Sign in to read the books in your school's library.</p>
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" id="tabStudent" aria-selected="true">Student</button>
+      <button type="button" role="tab" id="tabAdmin" aria-selected="false">School admin</button>
+    </div>
+
+    <form id="studentForm" novalidate>
+      <label for="school">School code</label>
+      <input id="school" class="code" autocomplete="organization" autocapitalize="none" spellcheck="false" placeholder="e.g. bfa482" required>
+      <label for="username">Username</label>
+      <input id="username" autocomplete="username" autocapitalize="none" spellcheck="false" placeholder="e.g. ama.mensah" required>
+      <label for="spw">Password</label>
+      <div class="pw"><input id="spw" type="password" autocomplete="current-password" autocapitalize="none" spellcheck="false" required><button type="button" data-show="spw">Show</button></div>
+      <p class="err" id="sErr" role="alert" hidden></p>
+      <button class="btn" id="sBtn">Sign in</button>
+      <p class="hint">Forgot your password? Ask your teacher or school admin for a new one.</p>
+    </form>
+
+    <form id="adminForm" novalidate hidden>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="email" required>
+      <label for="apw">Password</label>
+      <div class="pw"><input id="apw" type="password" autocomplete="current-password" required><button type="button" data-show="apw">Show</button></div>
+      <p class="err" id="aErr" role="alert" hidden></p>
+      <button class="btn" id="aBtn">Sign in</button>
+      <p class="hint" id="aHint">New school? <a href="/#pricing">Choose a plan</a> and you'll create your admin account right after paying.</p>
+    </form>
+  </div>
+</main>
+
+<footer class="foot"><div class="foot-inner">
+  <span>© {{YEAR}} {{BUSINESS_NAME}}</span><a href="/">Home</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a>
+</div></footer>
+
+<script>
+(function () {
+  'use strict';
+  var q = new URLSearchParams(location.search);
+  var $ = function (id) { return document.getElementById(id); };
+  var next = q.get('next');
+  if (!next || !/^\/(index\.html)?(\?|#|$)/.test(next)) next = '/index.html';
+
+  function tab(admin) {
+    $('tabStudent').setAttribute('aria-selected', !admin);
+    $('tabAdmin').setAttribute('aria-selected', admin);
+    $('studentForm').hidden = admin; $('adminForm').hidden = !admin;
+    $('lead').textContent = admin ? 'Manage your school’s plan and student logins.' : 'Sign in to read the books in your school’s library.';
+    (admin ? $('email') : ($('school').value ? $('username') : $('school'))).focus();
+  }
+  $('tabStudent').onclick = function () { tab(false); };
+  $('tabAdmin').onclick = function () { tab(true); };
+
+  var saved = '';
+  try { saved = localStorage.getItem('elib_school') || ''; } catch (e) {}
+  $('school').value = (q.get('school') || saved).toLowerCase();
+  tab(q.get('as') === 'admin');
+  if (q.get('inactive')) { $('sErr').textContent = 'Your school’s library subscription has ended. Please ask your school to renew it.'; $('sErr').hidden = false; }
+
+  document.querySelectorAll('[data-show]').forEach(function (b) {
+    b.onclick = function () { var i = $(b.getAttribute('data-show')); var show = i.type === 'password'; i.type = show ? 'text' : 'password'; b.textContent = show ? 'Hide' : 'Show'; };
+  });
+
+  var ERR = {
+    wrong_login: 'That sign-in is not right. Check the details and try again.',
+    school_inactive: 'Your school’s library subscription has ended. Please ask your school to renew it.',
+    too_many: 'Too many tries. Please wait 15 minutes and try again.'
+  };
+  function submit(form, btn, errEl, body, done) {
+    form.onsubmit = function (e) {
+      e.preventDefault();
+      errEl.hidden = true;
+      var b = body();
+      if (!b) return;
+      btn.disabled = true; btn.textContent = 'Signing in…';
+      fetch('/api/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(b) })
+        .then(function (r) { return r.json().catch(function () { return {}; }).then(function (d) { return { ok: r.ok, d: d }; }); })
+        .then(function (x) {
+          if (x.ok) return done();
+          errEl.textContent = ERR[x.d.error] || 'Something went wrong. Please try again.'; errEl.hidden = false;
+        })
+        .catch(function () { errEl.textContent = 'Could not connect. Check the internet connection.'; errEl.hidden = false; })
+        .then(function () { btn.disabled = false; btn.textContent = 'Sign in'; });
+    };
+  }
+  submit($('studentForm'), $('sBtn'), $('sErr'), function () {
+    var b = { kind: 'student', school: $('school').value.trim(), username: $('username').value.trim(), password: $('spw').value };
+    if (!b.school || !b.username || !b.password) { $('sErr').textContent = 'Please fill in your school code, username and password.'; $('sErr').hidden = false; return null; }
+    return b;
+  }, function () { try { localStorage.setItem('elib_school', $('school').value.trim().toLowerCase()); } catch (e) {} location.href = next; });
+  submit($('adminForm'), $('aBtn'), $('aErr'), function () {
+    var b = { kind: 'admin', email: $('email').value.trim(), password: $('apw').value };
+    if (!b.email || !b.password) { $('aErr').textContent = 'Please enter your email and password.'; $('aErr').hidden = false; return null; }
+    return b;
+  }, function () { location.href = '/admin.html'; });
+
+  fetch('/api/config').then(function (r) { return r.json(); }).then(function (c) {
+    var k = c.contact || {}, how = k.whatsapp ? 'WhatsApp +' + k.whatsapp : k.email || k.phone;
+    if (how) $('aHint').insertAdjacentText('beforeend', ' Forgot your admin password? Contact us: ' + how + '.');
+  }).catch(function () {});
+})();
+</script>
+</body>
+</html>

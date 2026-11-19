@@ -1,0 +1,12 @@
+{
+  "name": "school-elibrary",
+  "version": "1.0.0",
+  "private": true,
+  "description": "School eLibrary website with Paystack payments",
+  "scripts": {
+    "start": "node server/server.js",
+    "add-books": "node tools/add-books.js",
+    "serve-offline": "node tools/serve.js"
+  },
+  "engines": { "node": ">=18" }
+}

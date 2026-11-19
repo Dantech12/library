@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Payment status — {{BUSINESS_NAME}}</title>
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="top"><div class="top-inner">
+  <a class="logo" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2563eb"/><path d="M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z" fill="#fbbf24"/></svg>{{BUSINESS_NAME}}</a>
+</div></header>
+
+<main class="page">
+  <div class="card" id="box" aria-live="polite">
+    <div class="status wait"><div class="status-ico">…</div><div><h1>Checking your payment</h1><p>Please wait a moment while we confirm your payment with Paystack.</p></div></div>
+  </div>
+</main>
+
+<footer class="foot"><div class="foot-inner">
+  <span>© {{YEAR}} {{BUSINESS_NAME}}</span><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="refunds.html">Refunds</a>
+</div></footer>
+
+<script>
+(function () {
+  'use strict';
+  var box = document.getElementById('box');
+  var q = new URLSearchParams(location.search);
+  var ref = q.get('reference') || q.get('trxref') || '';
+  var tries = 0, cfg = null, claim = '';
+  try { claim = localStorage.getItem('elib_claim:' + ref) || ''; } catch (e) {}
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function money(p, cur) { return (cur === 'GHS' ? 'GH₵' : cur + ' ') + (p / 100).toLocaleString('en-GH', { maximumFractionDigits: 2 }); }
+  function contactHTML() {
+    var c = cfg && cfg.contact || {}, parts = [];
+    if (c.whatsapp) parts.push('<a href="https://wa.me/' + esc(c.whatsapp) + '" target="_blank" rel="noopener">WhatsApp</a>');
+    if (c.phone) parts.push('<a href="tel:' + esc(c.phone.replace(/\s/g, '')) + '">' + esc(c.phone) + '</a>');
+    if (c.email) parts.push('<a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a>');
+    return parts.length ? parts.join(' · ') : '';
+  }
+  function show(kind, icon, title, html) {
+    box.innerHTML = '<div class="status ' + kind + '"><div class="status-ico" aria-hidden="true">' + icon + '</div><div><h1>' + title + '</h1>' + html + '</div></div>';
+  }
+  function check() {
+    fetch('/api/verify?reference=' + encodeURIComponent(ref) + (claim ? '&claim=' + encodeURIComponent(claim) : '')).then(function (r) { return r.json(); }).then(function (d) {
+      if (d.paid) {
+        var plan = cfg && cfg.plans && cfg.plans[d.plan] ? cfg.plans[d.plan].name : d.plan;
+        var c = contactHTML();
+        var summary = '<ul class="summary"><li><span>School</span><b>' + esc(d.school) + '</b></li>' +
+          '<li><span>Plan</span><b>' + esc(plan) + (d.period === 'term' ? ' · per term' : ' · monthly') + '</b></li>' +
+          '<li><span>Amount paid</span><b>' + money(d.amount, d.currency) + '</b></li>' +
+          '<li><span>Reference</span><b>' + esc(ref) + '</b></li></ul>';
+        if (d.renewal) {
+          show('ok', '✓', 'Payment received. Your plan is renewed.', '<p>Thank you! Paystack has emailed your receipt.</p>' + summary +
+            '<div class="actions"><a class="btn" href="/admin.html">Back to your dashboard</a></div>');
+        } else if (d.account === 'claimable') {
+          show('ok', '✓', 'Payment received. Now create your account.',
+            '<p>Your <b>' + esc(plan) + '</b> plan is active and Paystack has emailed your receipt. Create your school admin account to add students and give them logins.</p>' + summary +
+            '<form id="claimForm" style="margin-top:22px" novalidate>' +
+            '<h2 style="margin-top:0">Create your admin account</h2>' +
+            '<p style="color:var(--muted);margin:0 0 10px">You will sign in with <b>' + esc(d.email) + '</b>.</p>' +
+            '<label for="cName" style="display:block;font-weight:600;margin:10px 0 4px">Your name</label><input id="cName" autocomplete="name" style="width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)">' +
+            '<label for="cPw" style="display:block;font-weight:600;margin:10px 0 4px">Choose a password (at least 8 characters)</label><input id="cPw" type="password" autocomplete="new-password" style="width:100%;font:inherit;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--ink)">' +
+            '<p id="cErr" role="alert" hidden style="background:#fde8e8;color:#8a1c1c;border-radius:10px;padding:8px 12px;margin-top:12px"></p>' +
+            '<div class="actions"><button class="btn" id="cBtn" style="cursor:pointer;font:inherit;font-weight:700">Create account</button></div></form>');
+          document.getElementById('claimForm').onsubmit = function (e) {
+            e.preventDefault();
+            var err = document.getElementById('cErr'), btn = document.getElementById('cBtn');
+            var pw = document.getElementById('cPw').value;
+            if (pw.length < 8) { err.textContent = 'Please use at least 8 characters.'; err.hidden = false; return; }
+            btn.disabled = true; btn.textContent = 'Creating…';
+            fetch('/api/claim', { method: 'POST', headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ reference: ref, claimToken: claim, name: document.getElementById('cName').value.trim(), password: pw }) })
+              .then(function (r) { return r.json().then(function (x) { return { ok: r.ok, x: x }; }); })
+              .then(function (res) {
+                if (res.ok) { try { localStorage.removeItem('elib_claim:' + ref); } catch (e2) {} location.href = '/admin.html'; return; }
+                err.textContent = { email_in_use: 'This email already has an admin account. Please contact us to link this payment to it.', already_claimed: 'The account for this payment has already been created. Please sign in.' }[res.x.error] || 'Could not create the account. Please try again.';
+                err.hidden = false; btn.disabled = false; btn.textContent = 'Create account';
+              }).catch(function () { err.textContent = 'Could not connect. Please try again.'; err.hidden = false; btn.disabled = false; btn.textContent = 'Create account'; });
+          };
+        } else if (d.account === 'ready') {
+          show('ok', '✓', 'Payment received. Thank you!', '<p>Your account is set up. Sign in to manage your students.</p>' + summary +
+            '<div class="actions"><a class="btn" href="/login.html?as=admin">Sign in</a></div>');
+        } else {
+          show('ok', '✓', 'Payment received. Thank you!', '<p>Your <b>' + esc(plan) + '</b> plan is active. Paystack has emailed your receipt.</p>' + summary +
+            '<h2>Create your admin account</h2><p>Please open this page in the same browser you paid with to create your account.' +
+            (c ? ' If that’s not possible, contact us with your reference and we’ll set it up for you: ' + c + '.' : ' If that’s not possible, contact us with your reference.') + '</p>');
+        }
+      } else if ((d.status === 'ongoing' || d.status === 'pending' || d.status === 'processing' || d.status === 'queued') && tries++ < 20) {
+        show('wait', '…', 'Waiting for your payment', '<p>If you are paying with Mobile Money, approve the prompt on your phone. This page updates by itself.</p>');
+        setTimeout(check, 5000);
+      } else if (d.status === 'success') {
+        var c2 = contactHTML();
+        show('wait', '!', 'We received a payment, but need to check it', '<p>The amount doesn’t match the plan you chose, so we will check it by hand and contact you within one working day.' + (c2 ? ' You can also reach us: ' + c2 + '.' : '') + '</p><ul class="summary"><li><span>Reference</span><b>' + esc(ref) + '</b></li></ul>');
+      } else if (d.error === 'bad_reference' || !d.status) {
+        show('bad', '!', 'We could not find this payment', '<p>Please go back and try again, or contact us with your Paystack receipt.</p><div class="actions"><a class="btn" href="/#pricing">Back to pricing</a></div>');
+      } else {
+        show('bad', '!', 'Payment not completed', '<p>Paystack says this payment was <b>' + esc(d.status) + '</b>. No money has been taken for it. You can try again.</p><div class="actions"><a class="btn" href="/#pricing">Try again</a></div>');
+      }
+    }).catch(function () {
+      if (tries++ < 20) { setTimeout(check, 5000); return; }
+      show('bad', '!', 'We could not confirm your payment yet', '<p>If money left your account, don’t worry: Paystack has a record of it and so do we. Please contact us with this reference: <b>' + esc(ref) + '</b>.</p>');
+    });
+  }
+  if (!ref) { show('bad', '!', 'No payment to check', '<p>This page shows the result of a payment.</p><div class="actions"><a class="btn" href="/#pricing">See pricing</a></div>'); return; }
+  fetch('/api/config').then(function (r) { return r.json(); }).then(function (c) { cfg = c; }).catch(function () {}).then(check);
+})();
+</script>
+</body>
+</html>

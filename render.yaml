@@ -1,0 +1,53 @@
+# Render Blueprint for the School eLibrary (https://render.com/docs/blueprint-spec).
+# Render asks for every value marked `sync: false` when you create the Blueprint.
+# Secrets are entered in Render's dashboard, never committed here.
+services:
+  - type: web
+    name: school-elibrary
+    runtime: node
+    plan: starter         # always on, with a disk. REQUIRED: school accounts and student logins are stored on the disk.
+    region: frankfurt     # closest Render region to West Africa
+    buildCommand: "true"  # nothing to build
+    startCommand: node server/server.js
+    healthCheckPath: /healthz
+    disk:
+      name: data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /var/data
+      - key: PUBLIC_BASE_URL          # e.g. https://school-elibrary.onrender.com
+        sync: false
+      # --- Payments (Paystack) ---
+      - key: PAYSTACK_SECRET_KEY      # sk_test_... until you go live
+        sync: false
+      - key: BILLING_CURRENCY
+        value: GHS
+      - key: PLAN_SCHOOL_AMOUNT       # pesewas: 15000 = GH₵150
+        value: "15000"
+      - key: PLAN_NETWORK_AMOUNT
+        value: "45000"
+      - key: PLAN_SCHOOL_MAX_STUDENTS
+        value: "1000"
+      - key: PLAN_NETWORK_MAX_STUDENTS
+        value: "5000"
+      - key: TERM_MONTHS
+        value: "4"
+      - key: TERM_DISCOUNT_PERCENT
+        value: "10"
+      # --- Business details ---
+      - key: BUSINESS_NAME
+        value: School eLibrary
+      - key: SUPPORT_EMAIL
+        sync: false
+      - key: SUPPORT_PHONE
+        sync: false
+      - key: SUPPORT_WHATSAPP
+        sync: false
+      - key: BUSINESS_ADDRESS
+        sync: false
+      - key: BUSINESS_COUNTRY
+        value: Ghana

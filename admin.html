@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>School dashboard — {{BUSINESS_NAME}}</title>
+<link rel="stylesheet" href="assets/site.css">
+<style>
+.page { max-width: 1060px; }
+.top-inner { max-width: 1060px; }
+.who { display: flex; align-items: center; gap: 12px; font-size: .92rem; color: var(--muted); }
+.who button, .link-btn { border: 0; background: none; color: var(--brand-2); font: inherit; font-weight: 700; cursor: pointer; padding: 0; text-decoration: underline; }
+h1 { margin-bottom: 4px; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 20px 0 26px; }
+.tile { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 18px 20px; box-shadow: var(--shadow-sm); border-left: 5px solid #2563eb; }
+.tile:nth-child(2) { border-left-color: #10b981; }
+.tile:nth-child(3) { border-left-color: #ec4899; }
+.tile span { color: var(--muted); font-size: .85rem; display: block; }
+.tile b { font-size: 1.35rem; display: block; margin-top: 2px; }
+.tile small { color: var(--muted); font-size: .85rem; }
+.codebox { font-family: ui-monospace, Consolas, monospace; letter-spacing: .06em; }
+.alert { border-radius: 14px; padding: 14px 16px; margin: 16px 0; display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
+.alert.bad { background: #fde8e8; color: #8a1c1c; }
+.alert.warn { background: #fff4d6; color: #5a4100; }
+.section { background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-sm); }
+.section h2 { letter-spacing: -.01em; }
+textarea:focus, input[type=text]:focus, input[type=password]:focus, input[type=search]:focus, select:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 15%, transparent); }
+.section h2 { margin: 0 0 4px; }
+.section > p { color: var(--muted); margin: 0 0 14px; }
+textarea, input[type=text], input[type=password], input[type=search], select { width: 100%; font: inherit; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+textarea { min-height: 150px; font-family: inherit; resize: vertical; }
+.row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.row > * { flex: none; }
+.btn { cursor: pointer; font: inherit; font-weight: 700; }
+.btn.small { padding: 7px 12px; font-size: .88rem; border-radius: 9px; }
+.btn.danger { background: linear-gradient(135deg, #ef4444, #dc2626); box-shadow: 0 6px 16px rgba(239,68,68,.3); }
+.btn:disabled { opacity: .6; cursor: default; }
+.msg { margin-top: 10px; font-size: .92rem; }
+.msg.err { color: #b42318; }
+.table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: .93rem; }
+th, td { text-align: left; padding: 9px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { background: var(--bg); font-size: .82rem; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
+tr:last-child td { border-bottom: 0; }
+td.mono, .mono { font-family: ui-monospace, Consolas, monospace; }
+.tag { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .76rem; font-weight: 800; background: #dcfce7; color: #166534; }
+.tag.off { background: #fde8e8; color: #8a1c1c; }
+.actions-cell button { margin-right: 6px; }
+.new-logins { border: 2px solid var(--brand); }
+.filters { display: grid; grid-template-columns: 1fr 200px; gap: 10px; margin-bottom: 12px; }
+.empty { color: var(--muted); text-align: center; padding: 28px; }
+.pay-list { margin: 0; padding: 0; list-style: none; }
+.pay-list li { display: flex; justify-content: space-between; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: .93rem; }
+details summary { cursor: pointer; font-weight: 700; }
+
+/* Printable login cards */
+#printArea { display: none; }
+@media print {
+  body > *:not(#printArea) { display: none !important; }
+  #printArea { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .slip { border: 1.5px dashed #888; border-radius: 10px; padding: 12px 14px; break-inside: avoid; font: 13px/1.45 system-ui, sans-serif; color: #000; }
+  .slip h3 { margin: 0 0 2px; font-size: 15px; }
+  .slip .s { color: #555; font-size: 12px; margin-bottom: 6px; }
+  .slip table { font-size: 13px; }
+  .slip td { border: 0; padding: 1px 8px 1px 0; }
+  .slip td:last-child { font-family: Consolas, monospace; font-size: 14px; font-weight: 700; }
+}
+@media (max-width: 760px) { .grid { grid-template-columns: 1fr; } .filters { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="top"><div class="top-inner">
+  <a class="logo" href="/"><svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2563eb"/><path d="M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z" fill="#fbbf24"/></svg>{{BUSINESS_NAME}}</a>
+  <div class="who"><span>{{USER_NAME}}</span><a href="/index.html">Open library</a><button id="logout">Sign out</button></div>
+</div></header>
+
+<main class="page">
+  <h1 id="schoolName">{{SCHOOL_NAME}}</h1>
+  <p class="updated" id="planLine">Loading…</p>
+  <div id="status"></div>
+
+  <div class="grid">
+    <div class="tile"><span>School code</span><b class="codebox" id="code">—</b><small>Students type this when they sign in.</small></div>
+    <div class="tile"><span>Students</span><b id="count">—</b><small id="limit"></small></div>
+    <div class="tile"><span>Student sign-in link</span><b style="font-size:.95rem;word-break:break-all" class="mono" id="link">—</b><small><button class="link-btn" id="copyLink">Copy link</button></small></div>
+  </div>
+
+  <section class="section new-logins" id="newBox" hidden>
+    <h2 id="newTitle">New logins</h2>
+    <p><b>Print or download these now.</b> For safety, passwords are only shown once. If one is lost, use "New password" to make another.</p>
+    <div class="row" style="margin-bottom:12px">
+      <button class="btn small" id="printBtn">Print login cards</button>
+      <button class="btn btn-ghost small" id="csvBtn">Download as spreadsheet (CSV)</button>
+      <button class="btn btn-ghost small" id="hideNew">Done</button>
+    </div>
+    <div class="table-wrap"><table><thead><tr><th>Name</th><th>Class</th><th>Username</th><th>Password</th></tr></thead><tbody id="newRows"></tbody></table></div>
+  </section>
+
+  <section class="section">
+    <h2>Add students</h2>
+    <p>Type or paste one student per line. Add the class after a comma if you like, for example <span class="mono">Ama Mensah, Basic 6</span>. Usernames and passwords are made for you.</p>
+    <textarea id="addText" placeholder="Ama Mensah, Basic 6&#10;Kofi Boateng, Basic 6&#10;Esi Owusu, JHS 1"></textarea>
+    <div class="row" style="margin-top:10px">
+      <input type="text" id="addGroup" placeholder="Class for everyone without one (optional)" style="flex:1 1 260px;width:auto">
+      <button class="btn" id="addBtn">Create logins</button>
+    </div>
+    <p class="msg" id="addMsg" hidden></p>
+  </section>
+
+  <section class="section">
+    <h2>Students</h2>
+    <p>Reset a forgotten password, turn off a login, or remove a student who has left.</p>
+    <div class="filters">
+      <input type="search" id="search" placeholder="Search by name or username">
+      <select id="groupFilter"><option value="">All classes</option></select>
+    </div>
+    <div class="row" style="margin-bottom:10px">
+      <button class="btn btn-ghost small" id="resetSel" disabled>New passwords for selected</button>
+      <button class="btn btn-ghost small" id="printSel" disabled>Print cards for selected</button>
+      <button class="btn danger small" id="deleteSel" disabled>Remove selected</button>
+      <span class="updated" id="selInfo" style="margin:0"></span>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr><th><input type="checkbox" id="selAll" aria-label="Select all"></th><th>Name</th><th>Class</th><th>Username</th><th>Last sign-in</th><th>Status</th><th></th></tr></thead>
+      <tbody id="rows"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+    </table></div>
+  </section>
+
+  <section class="section">
+    <h2>Plan and payments</h2>
+    <p id="planText"></p>
+    <div class="row" style="margin-bottom:14px"><a class="btn small" href="/?renew=1#pricing" id="renewBtn">Renew or change plan</a></div>
+    <ul class="pay-list" id="payments"></ul>
+  </section>
+
+  <section class="section">
+    <details>
+      <summary>Change your admin password</summary>
+      <div style="max-width:380px;margin-top:12px">
+        <label for="curPw">Current password</label><input type="password" id="curPw" autocomplete="current-password">
+        <label for="newPw" style="margin-top:8px;display:block">New password (at least 8 characters)</label><input type="password" id="newPw" autocomplete="new-password">
+        <button class="btn small" id="pwBtn" style="margin-top:12px">Change password</button>
+        <p class="msg" id="pwMsg" hidden></p>
+      </div>
+    </details>
+  </section>
+</main>
+
+<div id="printArea" aria-hidden="true"></div>
+
+<script>
+(function () {
+  'use strict';
+  var $ = function (id) { return document.getElementById(id); };
+  var students = [], selected = new Set(), overview = null, lastCreds = [], fresh = {};
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+  function date(ms) { return ms ? new Date(ms).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) : '—'; }
+  function money(p, cur) { return (cur === 'GHS' ? 'GH₵' : cur + ' ') + (p / 100).toLocaleString('en-GH', { maximumFractionDigits: 2 }); }
+  function api(path, body) {
+    return fetch(path, body ? { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) } : {})
+      .then(function (r) {
+        if (r.status === 401) { location.href = '/login.html?as=admin'; throw new Error('signed out'); }
+        return r.json().catch(function () { return {}; }).then(function (d) { if (!r.ok) { var e = new Error(d.error || 'error'); e.data = d; throw e; } return d; });
+      });
+  }
+  function msg(el, text, bad) { el.textContent = text; el.className = 'msg' + (bad ? ' err' : ''); el.hidden = !text; }
+
+  // ---- overview
+  function loadOverview() {
+    return api('/api/admin/overview').then(function (d) {
+      overview = d;
+      var o = d.org;
+      $('schoolName').textContent = o.name;
+      $('code').textContent = o.code;
+      $('link').textContent = d.signInUrl;
+      $('count').textContent = o.students.toLocaleString();
+      $('limit').textContent = 'of ' + o.maxStudents.toLocaleString() + ' on the ' + o.planName + ' plan';
+      $('planLine').textContent = o.planName + ' plan · ' + (o.paidUntil > Date.now() ? 'paid until ' + date(o.paidUntil) : 'payment due');
+      $('planText').textContent = 'Your ' + o.planName + ' plan is paid until ' + date(o.paidUntil) + '. Monthly card payments renew by themselves; Mobile Money and per-term payments need to be renewed before that date.';
+      var st = $('status');
+      if (!o.active) st.innerHTML = '<div class="alert bad"><span><b>Your plan has ended.</b> Students cannot sign in until you renew.</span><a class="btn small" href="/?renew=1#pricing">Renew now</a></div>';
+      else if (o.paidUntil < Date.now()) st.innerHTML = '<div class="alert bad"><span><b>Payment is overdue.</b> Students can still sign in until ' + date(o.graceUntil) + '.</span><a class="btn small" href="/?renew=1#pricing">Renew now</a></div>';
+      else if (o.paidUntil - Date.now() < 7 * 864e5) st.innerHTML = '<div class="alert warn"><span>Your plan ends on <b>' + date(o.paidUntil) + '</b>. Renew to keep students reading.</span><a class="btn small" href="/?renew=1#pricing">Renew</a></div>';
+      else st.innerHTML = '';
+      $('payments').innerHTML = d.payments.length ? d.payments.map(function (p) {
+        return '<li><span>' + date(p.paidAt) + ' · ' + esc(p.plan === 'network' ? 'Network' : 'School') + (p.period === 'term' ? ' (term)' : ' (month)') + '</span><b>' + money(p.amount, d.currency) + '</b></li>';
+      }).join('') : '<li><span>No payments yet.</span></li>';
+    });
+  }
+
+  // ---- students table
+  function loadStudents() {
+    return api('/api/admin/students').then(function (d) { students = d.students; renderGroups(); render(); });
+  }
+  function renderGroups() {
+    var cur = $('groupFilter').value, groups = [];
+    students.forEach(function (s) { if (s.group && groups.indexOf(s.group) < 0) groups.push(s.group); });
+    groups.sort();
+    $('groupFilter').innerHTML = '<option value="">All classes</option>' + groups.map(function (g) { return '<option>' + esc(g) + '</option>'; }).join('');
+    $('groupFilter').value = groups.indexOf(cur) >= 0 ? cur : '';
+  }
+  function visible() {
+    var q = $('search').value.trim().toLowerCase(), g = $('groupFilter').value;
+    return students.filter(function (s) {
+      return (!g || s.group === g) && (!q || s.name.toLowerCase().indexOf(q) >= 0 || s.username.indexOf(q) >= 0);
+    });
+  }
+  function render() {
+    var list = visible();
+    $('rows').innerHTML = list.length ? list.map(function (s) {
+      return '<tr><td><input type="checkbox" data-sel="' + s.id + '"' + (selected.has(s.id) ? ' checked' : '') + ' aria-label="Select ' + esc(s.name) + '"></td>' +
+        '<td>' + esc(s.name) + '</td><td>' + esc(s.group || '—') + '</td><td class="mono">' + esc(s.username) + '</td>' +
+        '<td>' + (s.lastLogin ? date(s.lastLogin) : 'Never') + '</td>' +
+        '<td>' + (s.disabled ? '<span class="tag off">Turned off</span>' : '<span class="tag">Active</span>') + '</td>' +
+        '<td class="actions-cell"><button class="btn btn-ghost small" data-reset="' + s.id + '">New password</button>' +
+        '<button class="btn btn-ghost small" data-toggle="' + s.id + '">' + (s.disabled ? 'Turn on' : 'Turn off') + '</button></td></tr>';
+    }).join('') : '<tr><td colspan="7" class="empty">' + (students.length ? 'No students match.' : 'No students yet. Add some above.') + '</td></tr>';
+    $('selAll').checked = list.length > 0 && list.every(function (s) { return selected.has(s.id); });
+    updateSel();
+  }
+  function updateSel() {
+    var n = selected.size;
+    ['resetSel', 'printSel', 'deleteSel'].forEach(function (id) { $(id).disabled = !n; });
+    $('selInfo').textContent = n ? n + ' selected' : '';
+  }
+  $('search').oninput = render;
+  $('groupFilter').onchange = render;
+  $('selAll').onchange = function () {
+    visible().forEach(function (s) { if ($('selAll').checked) selected.add(s.id); else selected.delete(s.id); });
+    render();
+  };
+  $('rows').addEventListener('change', function (e) {
+    var id = e.target.getAttribute('data-sel');
+    if (!id) return;
+    if (e.target.checked) selected.add(id); else selected.delete(id);
+    updateSel();
+  });
+  $('rows').addEventListener('click', function (e) {
+    var r = e.target.getAttribute('data-reset'), t = e.target.getAttribute('data-toggle');
+    if (r) {
+      var s = students.find(function (x) { return x.id === r; });
+      if (!confirm('Make a new password for ' + s.name + '? The old one will stop working.')) return;
+      api('/api/admin/students/reset', { ids: [r] }).then(function (d) { showNew(d.reset, 'New password'); });
+    }
+    if (t) {
+      var st = students.find(function (x) { return x.id === t; });
+      api('/api/admin/students/update', { id: t, disabled: !st.disabled }).then(function (d) {
+        st.disabled = d.student.disabled; render();
+      });
+    }
+  });
+
+  // ---- bulk actions
+  $('resetSel').onclick = function () {
+    if (!confirm('Make new passwords for ' + selected.size + ' students? Their old passwords will stop working.')) return;
+    api('/api/admin/students/reset', { ids: Array.from(selected) }).then(function (d) { showNew(d.reset, 'New passwords'); });
+  };
+  $('printSel').onclick = function () {
+    // Passwords are never stored in readable form, so cards for existing students need new passwords.
+    if (!confirm('To print cards, new passwords are made for the ' + selected.size + ' selected students. Their old passwords will stop working. Continue?')) return;
+    api('/api/admin/students/reset', { ids: Array.from(selected) }).then(function (d) { showNew(d.reset, 'New passwords'); printCards(); });
+  };
+  $('deleteSel').onclick = function () {
+    if (!confirm('Remove ' + selected.size + ' students? They will no longer be able to sign in. This cannot be undone.')) return;
+    api('/api/admin/students/delete', { ids: Array.from(selected) }).then(function () {
+      selected.clear(); return Promise.all([loadStudents(), loadOverview()]);
+    });
+  };
+
+  // ---- add students
+  $('addBtn').onclick = function () {
+    var def = $('addGroup').value.trim();
+    var list = $('addText').value.split(/\r?\n/).map(function (line) {
+      var i = line.indexOf(','), name = (i >= 0 ? line.slice(0, i) : line).replace(/\s+/g, ' ').trim();
+      var group = i >= 0 ? line.slice(i + 1).trim() : def;
+      return { name: name, group: group };
+    }).filter(function (x) { return x.name.length >= 2; });
+    if (!list.length) { msg($('addMsg'), 'Type at least one student name.', true); return; }
+    $('addBtn').disabled = true; $('addBtn').textContent = 'Creating…';
+    api('/api/admin/students', { students: list }).then(function (d) {
+      $('addText').value = '';
+      msg($('addMsg'), d.created.length + ' logins created.');
+      showNew(d.created, d.created.length + ' new logins');
+      return Promise.all([loadStudents(), loadOverview()]);
+    }).catch(function (e) {
+      var t = { plan_limit: 'This would go over your plan’s limit of ' + (e.data && e.data.detail) + ' students. Remove some students or change plan.', too_many_at_once: 'Please add at most 500 students at a time.' }[e.message];
+      msg($('addMsg'), t || 'Could not create logins. Please try again.', true);
+    }).then(function () { $('addBtn').disabled = false; $('addBtn').textContent = 'Create logins'; });
+  };
+
+  // ---- new credentials panel, printing, CSV
+  function showNew(list, title) {
+    list.forEach(function (c) { fresh[c.id] = c; });
+    lastCreds = list;
+    $('newTitle').textContent = title;
+    $('newRows').innerHTML = list.map(function (c) {
+      return '<tr><td>' + esc(c.name) + '</td><td>' + esc(c.group || '—') + '</td><td class="mono">' + esc(c.username) + '</td><td class="mono"><b>' + esc(c.password) + '</b></td></tr>';
+    }).join('');
+    $('newBox').hidden = false;
+    $('newBox').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  function printCards() {
+    var o = overview.org, url = overview.signInUrl;
+    $('printArea').innerHTML = lastCreds.map(function (c) {
+      return '<div class="slip"><h3>' + esc(o.name) + ' eLibrary</h3><div class="s">Sign in at ' + esc(url.replace(/^https?:\/\//, '')) + '</div>' +
+        '<table><tr><td>Name</td><td style="font-family:inherit;font-weight:600">' + esc(c.name) + '</td></tr>' +
+        '<tr><td>School code</td><td>' + esc(o.code) + '</td></tr><tr><td>Username</td><td>' + esc(c.username) + '</td></tr>' +
+        '<tr><td>Password</td><td>' + esc(c.password) + '</td></tr></table></div>';
+    }).join('');
+    setTimeout(function () { window.print(); }, 50);
+  }
+  $('printBtn').onclick = printCards;
+  $('csvBtn').onclick = function () {
+    var q = function (v) { v = String(v == null ? '' : v); if (/^[=+\-@\t\r]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; };
+    var rows = [['Name', 'Class', 'School code', 'Username', 'Password', 'Sign-in link']].concat(lastCreds.map(function (c) {
+      return [c.name, c.group, overview.org.code, c.username, c.password, overview.signInUrl];
+    }));
+    var blob = new Blob(['﻿' + rows.map(function (r) { return r.map(q).join(','); }).join('\r\n')], { type: 'text/csv;charset=utf-8' });
+    var a = document.createElement('a');
+    a.href = URL.createObjectURL(blob); a.download = overview.org.code + '-student-logins.csv';
+    document.body.appendChild(a); a.click(); a.remove();
+  };
+  $('hideNew').onclick = function () {
+    if (!confirm('Have you printed or saved these passwords? They will not be shown again.')) return;
+    $('newBox').hidden = true; $('newRows').innerHTML = ''; lastCreds = [];
+  };
+
+  // ---- misc
+  $('copyLink').onclick = function () {
+    var t = $('link').textContent;
+    (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(function () { $('copyLink').textContent = 'Copied!'; }, function () { prompt('Copy this link:', t); });
+  };
+  $('logout').onclick = function () { fetch('/api/logout', { method: 'POST' }).then(function () { location.href = '/login.html?as=admin'; }); };
+  $('pwBtn').onclick = function () {
+    api('/api/admin/password', { current: $('curPw').value, next: $('newPw').value }).then(function () {
+      $('curPw').value = $('newPw').value = ''; msg($('pwMsg'), 'Password changed. Other devices have been signed out.');
+    }).catch(function (e) {
+      msg($('pwMsg'), e.message === 'wrong_password' ? 'Your current password is not right.' : e.message === 'weak_password' ? 'Use at least 8 characters.' : 'Could not change the password.', true);
+    });
+  };
+  window.addEventListener('beforeunload', function (e) { if (!$('newBox').hidden) { e.preventDefault(); e.returnValue = ''; } });
+
+  loadOverview().then(loadStudents);
+})();
+</script>
+</body>
+</html>

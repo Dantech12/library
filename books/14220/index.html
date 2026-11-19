@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><style>
+#pg-header div, #pg-footer div {
+    all: inherit;
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 2em;
+}
+#pg-footer div.agate {
+    font-size: 90%;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+#pg-footer li {
+    all: initial;
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-indent: -0.6em;
+}
+#pg-footer div.secthead {
+    font-size: 110%;
+    font-weight: bold;
+}
+#pg-footer #project-gutenberg-license {
+    font-size: 110%;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+#pg-header-heading {
+    all: inherit;
+    text-align: center;
+    font-size: 120%;
+    font-weight: bold;
+}
+#pg-footer-heading {
+    all: inherit;
+    text-align: center;
+    font-size: 120%;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+#pg-header #pg-machine-header p {
+    text-indent: -4em;
+    margin-left: 4em;
+    margin-top: 1em;
+    margin-bottom: 0;
+    font-size: medium
+}
+#pg-header #pg-header-authlist {
+    all: initial;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+#pg-header #pg-machine-header strong {
+    font-weight: normal;
+}
+#pg-header #pg-start-separator, #pg-footer #pg-end-separator {
+    margin-bottom: 3em;
+    margin-left: 0;
+    margin-right: auto;
+    margin-top: 2em;
+    text-align: center
+}
+
+    .xhtml_center {text-align: center; display: block;}
+    .xhtml_center table {
+        display: table;
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+        }</style><title>
+      The Project Gutenberg eBook of The Tale Of Flopsy Bunnies, by Beatrix Potter.
+    </title>
+<style>.pg_body_wrapper {
+    display: inline
+    }
+body {
+    background: initial;
+    color: initial
+    }
+a[href] {
+    text-decoration: underline
+    }</style><style>p {
+    margin-top: 0.75em;
+    text-align: justify;
+    margin-bottom: 0.75em
+    }
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+    clear: both
+    }
+hr {
+    text-align: center;
+    width: 50%
+    }
+html > body hr {
+    margin-right: 25%;
+    margin-left: 25%;
+    width: 50%
+    }
+hr.full {
+    width: 80%;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    clear: both
+    }
+html > body hr.full {
+    margin-right: 10%;
+    margin-left: 10%;
+    width: 80%
+    }
+hr.short {
+    text-align: center;
+    width: 20%
+    }
+html > body hr.short {
+    margin-right: 40%;
+    margin-left: 40%;
+    width: 20%
+    }
+table {
+    margin-left: auto;
+    margin-right: auto
+    }
+@media screen {
+    body {
+        margin-left: 10%;
+        margin-right: 10%
+        }
+    }
+.pagedjs_page_content > div {
+    margin-left: 10%;
+    margin-right: 10%
+    }
+.img {
+    text-align: center
+    }
+.linenum {
+    position: absolute;
+    top: auto;
+    left: 4%
+    }
+.blockquot {
+    margin-left: 5%;
+    margin-right: 10%
+    }
+.pagenum {
+    position: absolute;
+    left: 92%;
+    font-size: smaller;
+    text-align: right
+    }
+.sidenote {
+    width: 20%;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 1em;
+    float: right;
+    clear: right;
+    margin-top: 1em;
+    font-size: smaller;
+    background: #eee;
+    border: dashed 1px
+    }
+.bb {
+    border-bottom: solid 2px
+    }
+.bl {
+    border-left: solid 2px
+    }
+.bt {
+    border-top: solid 2px
+    }
+.br {
+    border-right: solid 2px
+    }
+.bbox {
+    border: solid 2px
+    }
+.center {
+    text-align: center
+    }
+.smcap {
+    font-variant: small-caps
+    }
+.figcenter {
+    margin: auto;
+    text-align: center
+    }
+.figleft {
+    float: left;
+    clear: left;
+    margin-left: 0;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    margin-right: 1em;
+    padding: 0;
+    text-align: center
+    }
+.figright {
+    float: right;
+    clear: right;
+    margin-left: 1em;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    margin-right: 0;
+    padding: 0;
+    text-align: center
+    }
+.footnotes {
+    border: dashed 1px
+    }
+.footnote {
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: 0.9em
+    }
+.footnote .label {
+    position: absolute;
+    right: 84%;
+    text-align: right
+    }
+.fnanchor {
+    vertical-align: super;
+    font-size: 0.8em;
+    text-decoration: none
+    }
+.poem {
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: left
+    }
+.poem br {
+    display: none
+    }
+.poem .stanza {
+    margin: 1em 0 1em 0
+    }
+.poem span {
+    display: block;
+    margin: 0;
+    padding-left: 3em;
+    text-indent: -3em
+    }
+.poem span.i2 {
+    display: block;
+    margin-left: 2em
+    }
+.poem span.i4 {
+    display: block;
+    margin-left: 4em
+    }
+body {
+    background: initial;
+    color: initial
+    }
+a[href] {
+    text-decoration: underline
+    }</style>
+<link rel="schema.dc" href="http://purl.org/dc/elements/1.1/">
+<link rel="schema.dcterms" href="http://purl.org/dc/terms/">
+<meta name="dc.title" content="The Tale of the Flopsy Bunnies">
+<meta name="dc.language" content="en">
+<meta name="dcterms.source" content="https://www.gutenberg.org/files/14220/14220-h/14220-h.htm">
+<meta name="dcterms.modified" content="2026-11-06T13:37:20.758621+00:00">
+<meta name="dc.rights" content="Public domain in the USA.">
+<link rel="dcterms.isFormatOf" href="http://www.gutenberg.org/ebooks/14220">
+<meta name="dc.creator" content="Potter, Beatrix, 1866-1943">
+<meta name="dc.subject" content="Children's stories, English">
+<meta name="dc.subject" content="Rabbits -- Juvenile fiction">
+<meta name="dcterms.created" content="2004-11-30">
+<meta name="generator" content="Ebookmaker 0.14.6 by Project Gutenberg">
+<meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
+<meta property="og:title" content="The Tale of the Flopsy Bunnies">
+<meta property="og:type" content="Text">
+<meta property="og:url" content="https://www.gutenberg.org/cache/epub/14220/pg14220-images.html">
+<meta property="og:image" content="https://www.gutenberg.org/cache/epub/14220/pg14220.cover.medium.jpg">
+<link rel="stylesheet" href="../../assets/book.css"><script src="../../assets/book.js"></script></head>
+<body><div></div>
+<div class="img">
+<a href="images/image031.jpg" target="_blank" id="id-5796337912747855187"><img alt="front" height="400" src="images/image031-thumbnail.jpg" width="295" id="img_images_image031-thumbnail.jpg"></a>
+</div>
+<div class="img">
+<a href="images/image001.jpg" target="_blank" id="id-2833750044219533767"><img alt="facing" height="300" src="images/image001-thumbnail.jpg" width="433" id="img_images_image001-thumbnail.jpg"></a>
+</div>
+<div class="img">
+<a href="images/image002.jpg" target="_blank" id="id-6567731945157514519"><img alt="facing" height="385" src="images/image002-thumbnail.jpg" width="300" id="img_images_image002-thumbnail.jpg"></a>
+</div>
+<h1>THE TALE OF THE FLOPSY BUNNIES</h1>
+<h3>BY</h3>
+<h2>BEATRIX POTTER</h2>
+<h5> <i>Author of<br>
+The Tale of Peter Rabbit," &amp;c.</i><br></h5>
+<div class="img">
+<a href="images/image003-thumbnail.jpg" target="_blank" id="id-159068150979863831"><img alt="facing" height="172" src="images/image003-thumbnail.jpg" width="200" id="img_images_image003-thumbnail.jpg"></a>
+</div>
+<h4>FREDERICK WARNE &amp; CO., INC.</h4>
+<h4>NEW YORK</h4>
+<hr class="short">
+<h4>1909</h4>
+<h4>BY</h4>
+<h4>FREDERICK WARNE &amp; Co.</h4>
+<hr class="short">
+<h5>FOR ALL LITTLE FRIENDS<br>
+OF<br>
+MR. MCGREGOR &amp; PETER &amp; BENJAMIN</h5>
+<hr class="full">
+<div class="figleft">
+<a href="images/image004.jpg" target="_blank" id="id-2227977650340286436"><img alt="sleeping" height="400" src="images/image004-thumbnail.jpg" width="359" id="img_images_image004-thumbnail.jpg"></a>
+</div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<div class="pg_body_wrapper"><br></div>
+<p>It is said that the effect of eating too much lettuce is "soporific."</p>
+<p><i>I</i> have never felt sleepy after eating lettuces; but then <i>I</i> am not a
+rabbit.</p>
+<p>They certainly had a very soporific effect upon the Flopsy Bunnies!</p>
+<div class="img">
+<a href="images/image005.jpg" target="_blank" id="id-7161988537927380091"><img alt="family" height="400" src="images/image005-thumbnail.jpg" width="322" id="img_images_image005-thumbnail.jpg"></a>
+</div>
+<p>When Benjamin Bunny grew up, he married his Cousin Flopsy. They had a
+large family, and they were very improvident and cheerful.</p>
+<p>I do not remember the separate names of their children; they were
+generally called the "Flopsy Bunnies."</p>
+<div class="img">
+<a href="images/image006.jpg" target="_blank" id="id-6755168073663793024"><img alt="gardening" height="400" src="images/image006-thumbnail.jpg" width="353" id="img_images_image006-thumbnail.jpg"></a>
+</div>
+<p>As there was not always quite enough to eat,—Benjamin used to borrow
+cabbages from Flopsy's brother, Peter Rabbit, who kept a nursery garden.</p>
+<div class="img">
+<a href="images/image007.jpg" target="_blank" id="id-1731822169778992754"><img alt="family" height="400" src="images/image007-thumbnail.jpg" width="342" id="img_images_image007-thumbnail.jpg"></a>
+</div>
+<p>Sometimes Peter Rabbit had no cabbages to spare.</p>
+<div class="img">
+<a href="images/image008.jpg" target="_blank" id="id-8074519472154637153"><img alt="gardening" height="400" src="images/image008-thumbnail.jpg" width="322" id="img_images_image008-thumbnail.jpg"></a>
+</div>
+<p>When this happened, the Flopsy Bunnies went across the field to a rubbish
+heap, in the ditch outside Mr. McGregor's garden.</p>
+<p>Mr. McGregor's rubbish heap was a mixture. There were jam pots and paper
+bags, and mountains of chopped grass from the mowing machine (which always
+tasted oily), and some rotten vegetable marrows and an old boot or two.
+One day—oh joy!—there were a quantity of overgrown lettuces, which had
+"shot" into flower.</p>
+<div class="img">
+<a href="images/image009.jpg" target="_blank" id="id-445621463356141838"><img alt="chewinglettuce" height="400" src="images/image009-thumbnail.jpg" width="347" id="img_images_image009-thumbnail.jpg"></a>
+</div>
+<p>The Flopsy Bunnies simply stuffed lettuces. By degrees, one after another,
+they were overcome with slumber, and lay down in the mown grass.</p>
+<div class="img">
+<a href="images/image010.jpg" target="_blank" id="id-7260606205960649438"><img alt="asleepinbag" height="381" src="images/image010-thumbnail.jpg" width="400" id="img_images_image010-thumbnail.jpg"></a>
+</div>
+<p>Benjamin was not so much overcome as his children. Before going to sleep
+he was sufficiently wide awake to put a paper bag over his head to keep
+off the flies.</p>
+<div class="img">
+<a href="images/image011.jpg" target="_blank" id="id-2033123587178757866"><img alt="Thomasina" height="400" src="images/image011-thumbnail.jpg" width="355" id="img_images_image011-thumbnail.jpg"></a>
+</div>
+<p>The little Flopsy Bunnies slept delightfully in the warm sun. From the
+lawn beyond the garden came the distant clacketty sound of the mowing
+machine. The bluebottles buzzed about the wall, and a little old mouse
+picked over the rubbish among the jam pots.</p>
+<p>(I can tell you her name, she was called Thomasina Tittlemouse, a
+woodmouse with a long tail.)</p>
+<div class="img">
+<a href="images/image012.jpg" target="_blank" id="id-1485376997791994991"><img alt="wakingBenjamin" height="400" src="images/image012-thumbnail.jpg" width="368" id="img_images_image012-thumbnail.jpg"></a>
+</div>
+<p>She rustled across the paper bag, and awakened Benjamin Bunny.</p>
+<p>The mouse apologized profusely, and said that she knew Peter Rabbit.</p>
+<div class="img">
+<a href="images/image013.jpg" target="_blank" id="id-737178244030066072"><img alt="lawnclippings" height="400" src="images/image013-thumbnail.jpg" width="334" id="img_images_image013-thumbnail.jpg"></a>
+</div>
+<p>While she and Benjamin were talking, close under the wall, they heard a
+heavy tread above their heads; and suddenly Mr. McGregor emptied out a
+sackful of lawn mowings right upon the top of the sleeping Flopsy Bunnies!
+Benjamin shrank down under his paper bag. The mouse hid in a jam pot.</p>
+<div class="img">
+<a href="images/image014.jpg" target="_blank" id="id-3146906805696550080"><img alt="McGregorlooking" height="400" src="images/image014-thumbnail.jpg" width="296" id="img_images_image014-thumbnail.jpg"></a>
+</div>
+<p>The little rabbits smiled sweetly in their sleep under the shower of
+grass; they did not awake because the lettuces had been so soporific.</p>
+<p>They dreamt that their mother Flopsy was tucking them up in a hay bed.</p>
+<p>Mr. McGregor looked down after emptying his sack. He saw some funny little
+brown tips of ears sticking up through the lawn mowings. He stared at them
+for some time.</p>
+<div class="img">
+<a href="images/image015.jpg" target="_blank" id="id-5973648931010623010"><img alt="intobag" height="400" src="images/image015-thumbnail.jpg" width="355" id="img_images_image015-thumbnail.jpg"></a>
+</div>
+<p>Presently a fly settled on one of them and it moved.</p>
+<p>Mr. McGregor climbed down on to the rubbish heap—</p>
+<p>"One, two, three, four! five! six leetle rabbits!" said he as he dropped
+them into his sack. The Flopsy Bunnies dreamt that their mother was
+turning them over in bed. They stirred a little in their sleep, but still
+they did not wake up.</p>
+<div class="img">
+<a href="images/image016.jpg" target="_blank" id="id-7283070377385857045"><img alt="tyingbag" height="400" src="images/image016-thumbnail.jpg" width="368" id="img_images_image016-thumbnail.jpg"></a>
+</div>
+<p>Mr. McGregor tied up the sack and left it on the wall.</p>
+<p>He went to put away the mowing machine.</p>
+<div class="img">
+<a href="images/image017.jpg" target="_blank" id="id-6296868265974412288"><img alt="Mrs.Flopsy" height="400" src="images/image017-thumbnail.jpg" width="343" id="img_images_image017-thumbnail.jpg"></a>
+</div>
+<p>While he was gone, Mrs. Flopsy Bunny (who had remained at home) came
+across the field.</p>
+<p>She looked suspiciously at the sack and wondered where everybody was?</p>
+<div class="img">
+<a href="images/image018.jpg" target="_blank" id="id-4370011648773206084"><img alt="outsidethebag" height="400" src="images/image018-thumbnail.jpg" width="318" id="img_images_image018-thumbnail.jpg"></a>
+</div>
+<p>Then the mouse came out of her jam pot, and Benjamin took the paper bag
+off his head, and they told the doleful tale.</p>
+<p>Benjamin and Flopsy were in despair, they could not undo the string.</p>
+<p>But Mrs. Tittlemouse was a resourceful person. She nibbled a hole in the
+bottom corner of the sack.</p>
+<div class="img">
+<a href="images/image019.jpg" target="_blank" id="id-612300208890963409"><img alt="Thomasina" height="400" src="images/image019-thumbnail.jpg" width="350" id="img_images_image019-thumbnail.jpg"></a>
+</div>
+<p>The little rabbits were pulled out and pinched to wake them.</p>
+<p>Their parents stuffed the empty sack with three rotten vegetable marrows,
+an old blacking-brush and two decayed turnips.</p>
+<div class="img">
+<a href="images/image020.jpg" target="_blank" id="id-7507420026149685044"><img alt="wakingBenjamin" height="384" src="images/image020-thumbnail.jpg" width="400" id="img_images_image020-thumbnail.jpg"></a>
+</div>
+<p>Then they all hid under a bush and watched for Mr. McGregor.</p>
+<div class="img">
+<a href="images/image021.jpg" target="_blank" id="id-7217275664789342671"><img alt="McGregortakesbag" height="400" src="images/image021-thumbnail.jpg" width="318" id="img_images_image021-thumbnail.jpg"></a>
+</div>
+<p>Mr. McGregor came back and picked up the sack, and carried it off.</p>
+<p>He carried it hanging down, as if it were rather heavy.</p>
+<p>The Flopsy Bunnies followed at a safe distance.</p>
+<div class="img">
+<a href="images/image022.jpg" target="_blank" id="id-903968703128986449"><img alt="throughthearch" height="400" src="images/image022-thumbnail.jpg" width="318" id="img_images_image022-thumbnail.jpg"></a>
+</div>
+<p>They watched him go into his house.</p>
+<p>And then they crept up to the window to listen.</p>
+<div class="img">
+<a href="images/image023.jpg" target="_blank" id="id-7472908739548742563"><img alt="at the door" height="400" src="images/image023-thumbnail.jpg" width="331" id="img_images_image023-thumbnail.jpg"></a>
+</div>
+<p>Mr. McGregor threw down the sack on the stone floor in a way that would
+have been extremely painful to the Flopsy Bunnies, if they had happened to
+have been inside it.</p>
+<p>They could hear him drag his chair on the flags, and chuckle—</p>
+<p>"One, two, three, four, five, six leetle rabbits!" said Mr. McGregor.</p>
+<div class="img">
+<a href="images/image024.jpg" target="_blank" id="id-2097158097748444186"><img alt="atthewindow" height="400" src="images/image024-thumbnail.jpg" width="379" id="img_images_image024-thumbnail.jpg"></a>
+</div>
+<p>"Eh? What's that? What have they been spoiling now?" enquired Mrs.
+McGregor.</p>
+<p>"One, two, three, four, five, six leetle fat rabbits!" repeated Mr.
+McGregor, counting on his fingers—"one, two, three—"</p>
+<p>"Don't you be silly; what do you mean, you silly old man?"</p>
+<p>"In the sack! one, two, three, four, five, six!" replied Mr. McGregor.</p>
+<p>(The youngest Flopsy Bunny got upon the window-sill.)</p>
+<div class="img">
+<a href="images/image025.jpg" target="_blank" id="id-7355966304491450289"><img alt="onthesill" height="400" src="images/image025-thumbnail.jpg" width="345" id="img_images_image025-thumbnail.jpg"></a>
+</div>
+<p>Mrs. McGregor took hold of the sack and felt it. She said she could feel
+six, but they must be <i>old</i> rabbits, because they were so hard and all
+different shapes.</p>
+<p>"Not fit to eat; but the skins will do fine to line my old cloak."</p>
+<p>"Line your old cloak?" shouted Mr. McGregor—"I shall sell them and buy
+myself baccy!"</p>
+<p>"Rabbit tobacco! I shall skin them and cut off their heads."</p>
+<div class="img">
+<a href="images/image026.jpg" target="_blank" id="id-630314306476220222"><img alt="lookingin" height="400" src="images/image026-thumbnail.jpg" width="340" id="img_images_image026-thumbnail.jpg"></a>
+</div>
+<p>Mrs. McGregor untied the sack and put her hand inside.</p>
+<p>When she felt the vegetables she became very very angry. She said that Mr.
+McGregor had "done it a purpose."</p>
+<div class="img">
+<a href="images/image027.jpg" target="_blank" id="id-2904107479675243385"><img alt="struck" height="400" src="images/image027-thumbnail.jpg" width="361" id="img_images_image027-thumbnail.jpg"></a>
+</div>
+<p>And Mr. McGregor was very angry too. One of the rotten marrows came flying
+through the kitchen window, and hit the youngest Flopsy Bunny.</p>
+<p>It was rather hurt.</p>
+<div class="img">
+<a href="images/image028.jpg" target="_blank" id="id-2834446275026767697"><img alt="timetogo" height="400" src="images/image028-thumbnail.jpg" width="329" id="img_images_image028-thumbnail.jpg"></a>
+</div>
+<p>Then Benjamin and Flopsy thought that it was time to go home.</p>
+<div class="img">
+<a href="images/image029.jpg" target="_blank" id="id-8204973405391943225"><img alt="Thomasinaincoat" height="400" src="images/image029-thumbnail.jpg" width="331" id="img_images_image029-thumbnail.jpg"></a>
+</div>
+<p>So Mr. McGregor did not get his tobacco, and Mrs. McGregor did not get her
+rabbit skins.</p>
+<p>But next Christmas Thomasina Tittlemouse got a present of enough
+rabbit-wool to make herself a cloak and a hood, and a handsome muff and a
+pair of warm mittens.</p>
+<div class="img">
+<a href="images/image030.jpg" target="_blank" id="id-7635183033459374729"><img alt="backfacing" height="286" src="images/image030-thumbnail.jpg" width="400" id="img_images_image030-thumbnail.jpg"></a>
+</div>
+<hr style="width: 65%;">
+<h2>THE TALE OF THE FLOPSY BUNNIES</h2>
+<h3>BY BEATRIX POTTER</h3>
+<h4>F. WARNE &amp; Co</h4>
+<div></div></body>
+</html>

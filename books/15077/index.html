@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+    <meta charset="utf-8"><style>
+#pg-header div, #pg-footer div {
+    all: inherit;
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    margin-left: 2em;
+}
+#pg-footer div.agate {
+    font-size: 90%;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+#pg-footer li {
+    all: initial;
+    display: block;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    text-indent: -0.6em;
+}
+#pg-footer div.secthead {
+    font-size: 110%;
+    font-weight: bold;
+}
+#pg-footer #project-gutenberg-license {
+    font-size: 110%;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-align: center;
+}
+#pg-header-heading {
+    all: inherit;
+    text-align: center;
+    font-size: 120%;
+    font-weight: bold;
+}
+#pg-footer-heading {
+    all: inherit;
+    text-align: center;
+    font-size: 120%;
+    font-weight: normal;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+#pg-header #pg-machine-header p {
+    text-indent: -4em;
+    margin-left: 4em;
+    margin-top: 1em;
+    margin-bottom: 0;
+    font-size: medium
+}
+#pg-header #pg-header-authlist {
+    all: initial;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+#pg-header #pg-machine-header strong {
+    font-weight: normal;
+}
+#pg-header #pg-start-separator, #pg-footer #pg-end-separator {
+    margin-bottom: 3em;
+    margin-left: 0;
+    margin-right: auto;
+    margin-top: 2em;
+    text-align: center
+}
+
+    .xhtml_center {text-align: center; display: block;}
+    .xhtml_center table {
+        display: table;
+        text-align: left;
+        margin-left: auto;
+        margin-right: auto;
+        }</style><title>The Tale Of Mr. Jeremy Fisher | Project Gutenberg</title>
+    
+    <style>p {
+    margin-top: 0.75em;
+    text-align: justify;
+    margin-bottom: 0.75em
+    }
+h1, h2, h3, h4, h5, h6 {
+    text-align: center;
+    clear: both
+    }
+.h1, .h2, .h3 {
+    text-align: center;
+    display: block;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: bold
+    }
+.h1 {
+    font-size: 2em;
+    margin-top: 0.67em;
+    margin-bottom: 0.67em
+    }
+.h2 {
+    font-size: 1.5em;
+    margin-top: 0.83em;
+    margin-bottom: 0.83em
+    }
+.h3 {
+    font-size: 1.17em;
+    margin-top: 1em;
+    margin-bottom: 1em
+    }
+hr {
+    width: 33%;
+    margin-top: 2em;
+    margin-bottom: 2em;
+    margin-left: auto;
+    margin-right: auto;
+    clear: both
+    }
+table {
+    margin-left: auto;
+    margin-right: auto
+    }
+@media screen {
+    body {
+        margin-left: 0%;
+        margin-right: 0%
+        }
+    }
+.pagedjs_page_content > div {
+    margin-left: 0%;
+    margin-right: 0%
+    }
+.linenum {
+    position: absolute;
+    top: auto;
+    left: 4%
+    }
+.blockquot {
+    margin-left: 5%;
+    margin-right: 10%
+    }
+.pagenum {
+    position: absolute;
+    left: 92%;
+    font-size: smaller;
+    text-align: right
+    }
+.sidenote {
+    width: 20%;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    margin-left: 1em;
+    float: right;
+    clear: right;
+    margin-top: 1em;
+    font-size: smaller;
+    background: #eee;
+    border: dashed 1px
+    }
+.bb {
+    border-bottom: solid 2px
+    }
+.bl {
+    border-left: solid 2px
+    }
+.bt {
+    border-top: solid 2px
+    }
+.br {
+    border-right: solid 2px
+    }
+.bbox {
+    border: solid 2px
+    }
+.center {
+    text-align: center
+    }
+.smcap {
+    font-variant: small-caps
+    }
+.figcenter {
+    margin: auto;
+    text-align: center
+    }
+.figleft {
+    float: left;
+    clear: left;
+    margin-left: 0;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    margin-right: 1em;
+    padding: 0;
+    text-align: center
+    }
+.figright {
+    float: right;
+    clear: right;
+    margin-left: 1em;
+    margin-bottom: 1em;
+    margin-top: 1em;
+    margin-right: 0;
+    padding: 0;
+    text-align: center
+    }
+.footnotes {
+    border: dashed 1px
+    }
+.footnote {
+    margin-left: 10%;
+    margin-right: 10%;
+    font-size: 0.9em
+    }
+.footnote .label {
+    position: absolute;
+    right: 84%;
+    text-align: right
+    }
+.fnanchor {
+    vertical-align: super;
+    font-size: 0.8em;
+    text-decoration: none
+    }
+.poem {
+    margin-left: 10%;
+    margin-right: 10%;
+    text-align: left
+    }
+.poem br {
+    display: none
+    }
+.poem .stanza {
+    margin: 1em 0 1em 0
+    }
+.poem span {
+    display: block;
+    margin: 0;
+    padding-left: 3em;
+    text-indent: -3em
+    }
+.poem span.i2 {
+    display: block;
+    margin-left: 2em
+    }
+.poem span.i4 {
+    display: block;
+    margin-left: 4em
+    }
+body {
+    background: initial;
+    color: initial
+    }
+a[href] {
+    text-decoration: underline
+    }</style>
+  <link rel="schema.dc" href="http://purl.org/dc/elements/1.1/">
+<link rel="schema.dcterms" href="http://purl.org/dc/terms/">
+<meta name="dc.title" content="The Tale of Mr. Jeremy Fisher">
+<meta name="dc.language" content="en">
+<meta name="dcterms.source" content="https://www.gutenberg.org/files/15077/15077-h/15077-h.htm">
+<meta name="dcterms.modified" content="2026-11-06T17:12:21.508987+00:00">
+<meta name="dc.rights" content="Public domain in the USA.">
+<link rel="dcterms.isFormatOf" href="http://www.gutenberg.org/ebooks/15077">
+<meta name="dc.creator" content="Potter, Beatrix, 1866-1943">
+<meta name="dc.subject" content="Frogs -- Juvenile fiction">
+<meta name="dcterms.created" content="2005-02-16">
+<meta name="generator" content="Ebookmaker 0.14.6 by Project Gutenberg">
+<meta name="format-detection" content="telephone=no,date=no,address=no,email=no,url=no">
+<meta property="og:title" content="The Tale of Mr. Jeremy Fisher">
+<meta property="og:type" content="Text">
+<meta property="og:url" content="https://www.gutenberg.org/cache/epub/15077/pg15077-images.html">
+<meta property="og:image" content="https://www.gutenberg.org/cache/epub/15077/pg15077.cover.medium.jpg">
+<link rel="stylesheet" href="../../assets/book.css"><script src="../../assets/book.js"></script></head>
+<body><div style="text-align:center"></div>
+
+<hr style="width: 75%;">
+
+<h1>THE TALE OF<br>
+MR. JEREMY FISHER</h1>
+
+<div class="h3">BY</div>
+<div class="h2">BEATRIX POTTER</div>
+
+<div><br></div>
+<div><br></div>
+<div><br></div>
+
+<p class="center"><b>F. WARNE &amp; CO.</b></p>
+
+
+
+<hr style="width: 65%;">
+<div class="figcenter">
+<img alt="" src="images/jf01.jpg" title="Cover" id="img_images_jf01.jpg">
+</div>
+
+
+<hr style="width: 65%;">
+<div class="figcenter">
+<img alt="Inside Cover" src="images/jf02.jpg" title="Inside Cover" id="img_images_jf02.jpg">
+</div>
+
+
+
+<hr style="width: 65%;">
+<h2>THE TALE<br>
+OF<br>
+MR. JEREMY FISHER</h2>
+
+
+
+<hr style="width: 65%;">
+<div class="figcenter">
+<img alt="Fishing" src="images/jf03.jpg" title="Fishing" id="img_images_jf03.jpg">
+</div>
+
+
+
+<hr style="width: 65%;">
+<h2>THE TALE OF<br>
+MR. JEREMY FISHER</h2>
+
+<h3>BY<br>
+BEATRIX POTTER</h3>
+
+<h4><i>Author of</i>
+<i>"The Tale of Peter Rabbit," &amp;c.</i></h4>
+
+
+<div class="figcenter">
+<img alt="Turtle" src="images/bw.png" title="Turtle" id="img_images_bw.png">
+</div>
+
+
+<p class="center">FREDERICK WARNE &amp; CO., INC.
+NEW YORK</p>
+
+
+
+<hr style="width: 65%;">
+<p class="center">COPYRIGHT, 1906</p>
+<p class="center">BY</p>
+<p class="center">FREDERICK WARNE &amp; CO</p>
+
+
+
+
+
+<hr style="width: 65%;">
+<div class="h3">FOR</div>
+<div class="h2">STEPHANIE</div>
+<div class="h3">FROM</div>
+<div class="h2">COUSIN B.</div>
+
+
+
+<hr style="width: 65%;">
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf04.jpg" title="Jeremy" id="img_images_jf04.jpg">
+</div>
+
+<p>Once upon a time there
+was a frog called Mr.
+Jeremy Fisher; he lived in a
+little damp house amongst the
+buttercups at the edge of a
+pond.</p>
+
+<p>The water was all slippy-sloppy
+in the larder and
+in the back passage.</p>
+
+<p>But Mr. Jeremy liked getting
+his feet wet; nobody ever
+scolded him, and he never
+caught a cold!</p>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf05.jpg" title="Jeremy" id="img_images_jf05.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf06.jpg" title="Jeremy" id="img_images_jf06.jpg">
+</div>
+
+<p>He was quite pleased when
+he looked out and saw
+large drops of rain, splashing
+in the pond—</p>
+
+<p>"I will get some worms
+and go fishing and catch
+a dish of minnows for my
+dinner," said Mr. Jeremy
+Fisher. "If I catch more than
+five fish, I will invite my
+friends Mr. Alderman Ptolemy
+Tortoise and Sir Isaac Newton.
+The Alderman, however, eats
+salad."</p>
+
+<div class="figcenter">
+<img alt="Digging for worms" src="images/jf07.jpg" title="Digging for worms" id="img_images_jf07.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf08.jpg" title="Jeremy" id="img_images_jf08.jpg">
+</div>
+
+<p>Mr. Jeremy put on a
+macintosh, and a pair
+of shiny goloshes; he took his
+rod and basket, and set off
+with enormous hops to the
+place where he kept his boat.</p>
+
+<p>The boat was round and
+green, and very like the
+other lily-leaves. It was
+tied to a water-plant in
+the middle of the pond.</p>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf09.jpg" title="Jeremy" id="img_images_jf09.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf10.jpg" title="Jeremy" id="img_images_jf10.jpg">
+</div>
+
+<p>Mr. Jeremy took a reed
+pole, and pushed the
+boat out into open water. "I
+know a good place for minnows,"
+said Mr. Jeremy
+Fisher.</p>
+
+<p>Mr. Jeremy stuck his
+pole into the mud and
+fastened the boat to it.</p>
+
+<p>Then he settled himself
+cross-legged and arranged his
+fishing tackle. He had the
+dearest little red float. His
+rod was a tough stalk of
+grass, his line was a fine long
+white horse-hair, and he tied
+a little wriggling worm at the
+end.</p>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf11.jpg" title="Jeremy" id="img_images_jf11.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf12.jpg" title="Jeremy" id="img_images_jf12.jpg">
+</div>
+
+<p>The rain trickled down his
+back, and for nearly an
+hour he stared at the float.</p>
+
+<p>"This is getting tiresome,
+I think I should like some
+lunch," said Mr. Jeremy
+Fisher.</p>
+
+<p>He punted back again
+amongst the water-plants,
+and took some lunch
+out of his basket.</p>
+
+<p>"I will eat a butterfly sandwich,
+and wait till the
+shower is over," said Mr.
+Jeremy Fisher.</p>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf13.jpg" title="Jeremy" id="img_images_jf13.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Beetle" src="images/jf14.jpg" title="Beetle" id="img_images_jf14.jpg">
+</div>
+
+<p>A great big water-beetle
+came up underneath the
+lily leaf and tweaked the toe
+of one of his goloshes.</p>
+
+<p>Mr. Jeremy crossed his legs
+up shorter, out of reach, and
+went on eating his sandwich.</p>
+
+<p>Once or twice something
+moved about with a
+rustle and a splash amongst
+the rushes at the side of the
+pond.</p>
+
+<p>"I trust that is not a rat,"
+said Mr. Jeremy Fisher; "I
+think I had better get away
+from here."</p>
+
+<div class="figcenter">
+<img alt="I trust that is not a rat" src="images/jf15.jpg" title="I trust that is not a rat" id="img_images_jf15.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf16.jpg" title="Jeremy" id="img_images_jf16.jpg">
+</div>
+
+<p>Mr. Jeremy shoved the
+boat out again a little
+way, and dropped in the bait.
+There was a bite almost
+directly; the float gave a
+tremendous bobbit!</p>
+
+<p>"A minnow! a minnow! I
+have him by the nose!" cried
+Mr. Jeremy Fisher, jerking
+up his rod.</p>
+
+<p>But what a horrible surprise!
+Instead of a
+smooth fat minnow, Mr.
+Jeremy landed little Jack
+Sharp the stickleback, covered
+with spines!</p>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf17.jpg" title="Jeremy" id="img_images_jf17.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf18.jpg" title="Jeremy" id="img_images_jf18.jpg">
+</div>
+
+<p>The stickleback floundered
+about the boat, pricking
+and snapping until he was
+quite out of breath. Then he
+jumped back into the water.</p>
+
+<p>And a shoal of other little
+fishes put their heads
+out, and laughed at Mr.
+Jeremy Fisher.</p>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf19.jpg" title="Jeremy" id="img_images_jf19.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf20.jpg" title="Jeremy" id="img_images_jf20.jpg">
+</div>
+
+<p>And while Mr. Jeremy sat
+disconsolately on the
+edge of his boat—sucking his
+sore fingers and peering down
+into the water—a <i>much</i> worse
+thing happened; a really
+<i>frightful</i> thing it would have
+been, if Mr. Jeremy had not
+been wearing a macintosh!</p>
+
+<p>A great big enormous
+trout came up—ker-pflop-p-p-p!
+with a splash—and
+it seized Mr. Jeremy with
+a snap, "Ow! Ow! Ow!"—and
+then it turned and dived
+down to the bottom of the
+pond!</p>
+
+<div class="figcenter">
+<img alt="Trout" src="images/jf21.jpg" title="Trout" id="img_images_jf21.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Trout" src="images/jf22.jpg" title="Trout" id="img_images_jf22.jpg">
+</div>
+
+<p>But the trout was so displeased
+with the taste of
+the macintosh, that in less
+than half a minute it spat him
+out again; and the only thing
+it swallowed was Mr. Jeremy's
+goloshes.</p>
+
+<p>Mr. Jeremy bounced up
+to the surface of the
+water, like a cork and the
+bubbles out of a soda water
+bottle; and he swam with
+all his might to the edge of
+the pond.</p>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf23.jpg" title="Jeremy" id="img_images_jf23.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf24.jpg" title="Jeremy" id="img_images_jf24.jpg">
+</div>
+
+<p>He scrambled out on the
+first bank he came to,
+and he hopped home across
+the meadow with his macintosh
+all in tatters.</p>
+
+<p>"What a mercy that was
+not a pike!" said
+Mr. Jeremy Fisher. "I have
+lost my rod and basket; but
+it does not much matter, for I
+am sure I should never have
+dared to go fishing again!"</p>
+
+<div class="figcenter">
+<img alt="Jeremy" src="images/jf25.jpg" title="Jeremy" id="img_images_jf25.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Jeremy and Guests" src="images/jf26.jpg" title="Jeremy and Guests" id="img_images_jf26.jpg">
+</div>
+
+<p>He put some sticking
+plaster on his fingers,
+and his friends both came to
+dinner. He could not offer
+them fish, but he had something
+else in his larder.</p>
+
+<p>Sir Isaac Newton
+wore his black and gold
+waistcoat,</p>
+
+<div class="figcenter">
+<img alt="Jeremy and Newton" src="images/jf27.jpg" title="Jeremy and Newton" id="img_images_jf27.jpg">
+</div>
+
+<p>And Mr. Alderman Ptolemy
+Tortoise brought a salad
+with him in a string bag.</p>
+
+<div class="figcenter">
+<img alt="Jeremy and Friends" src="images/jf28.jpg" title="Jeremy and Friends" id="img_images_jf28.jpg">
+</div>
+
+<div class="figcenter">
+<img alt="Dinner" src="images/jf29.jpg" title="Dinner" id="img_images_jf29.jpg">
+</div>
+
+<p>And instead of a nice dish
+of minnows—they had a
+roasted grasshopper with
+lady-bird sauce; which frogs
+consider a beautiful treat; but
+<i>I</i> think it must have been
+nasty!</p>
+
+
+<p class="center"><b>THE END</b></p>
+
+<div class="figcenter">
+<img alt="Back Cover" src="images/jf02.jpg" title="Back Cover" id="img_images_jf02.jpg_1">
+</div>
+
+<hr style="width: 75%;">
+
+<div style="text-align:center"></div></body></html>

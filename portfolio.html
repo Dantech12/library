@@ -1,0 +1,813 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>School eLibrary — a digital library for every student</title>
+<meta name="description" content="A ready-made digital library for schools: novels, folktales, comics, poetry, textbooks and an encyclopedia. Works offline on any device. Free to start, from GH₵150/month for hosting and support.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z' fill='%23fbbf24'/%3E%3C/svg%3E">
+<style>
+@import url("assets/fonts.css");
+:root {
+  --brand: #2563eb; --brand-2: #1d4ed8; --violet: #7c3aed; --accent: #fbbf24; --accent-ink: #92400e;
+  --bg: #ffffff; --alt: #f5f7ff; --surface: #fff; --ink: #0f172a; --muted: #475569; --line: #e2e8f0;
+  --grad: linear-gradient(135deg, #2563eb 0%, #6d28d9 60%, #db2777 100%);
+  --shadow-sm: 0 1px 2px rgba(15,23,42,.06);
+  --shadow: 0 1px 2px rgba(15,23,42,.06), 0 14px 36px rgba(15,23,42,.10);
+  --shadow-brand: 0 10px 28px rgba(37,99,235,.28);
+  --c1: #2563eb; --c2: #f97316; --c3: #ec4899; --c4: #8b5cf6; --c5: #10b981; --c6: #0ea5e9;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brand: #60a5fa; --brand-2: #93c5fd; --violet: #a78bfa; --accent: #fbbf24; --accent-ink: #fbbf24;
+    --bg: #0b1120; --alt: #0f172a; --surface: #111827; --ink: #f1f5f9; --muted: #94a3b8; --line: #1f2a3d;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 36px rgba(0,0,0,.4); --shadow-brand: 0 10px 28px rgba(0,0,0,.45);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --brand: #60a5fa; --brand-2: #93c5fd; --violet: #a78bfa; --accent: #fbbf24; --accent-ink: #fbbf24;
+  --bg: #0b1120; --alt: #0f172a; --surface: #111827; --ink: #f1f5f9; --muted: #94a3b8; --line: #1f2a3d;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 36px rgba(0,0,0,.4); --shadow-brand: 0 10px 28px rgba(0,0,0,.45);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 17px/1.65 "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif; -webkit-font-smoothing: antialiased; }
+a { color: var(--brand-2); }
+h1, h2, h3 { line-height: 1.15; margin: 0; letter-spacing: -.01em; word-spacing: .03em; font-weight: 800; }
+p { margin: 0; }
+.wrap { max-width: 1160px; margin: 0 auto; padding: 0 16px; }
+svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; vertical-align: -.2em; }
+:focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; border-radius: 8px; }
+
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 12px; border: 0; background: var(--grad); color: #fff; font-weight: 700; text-decoration: none; font-size: 1rem; cursor: pointer; box-shadow: var(--shadow-brand); transition: transform .15s, box-shadow .15s, background .15s; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 14px 32px rgba(37,99,235,.36); }
+.btn-ghost { background: var(--surface); color: var(--brand-2); box-shadow: inset 0 0 0 1.5px var(--line), var(--shadow-sm); }
+.btn-ghost:hover { background: var(--alt); box-shadow: inset 0 0 0 1.5px var(--brand), var(--shadow-sm); color: var(--brand-2); }
+.btn-block { width: 100%; }
+.btn-sm { padding: 9px 16px; font-size: .92rem; border-radius: 10px; }
+.btn-light { background: #fde047; color: #1e1b4b; box-shadow: 0 10px 28px rgba(0,0,0,.18); }
+.btn-light:hover { background: #fef08a; }
+.btn-outline-light { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.7); }
+.btn-outline-light:hover { background: rgba(255,255,255,.12); }
+
+/* Nav */
+.nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: saturate(1.5) blur(14px); border-bottom: 1px solid var(--line); }
+.nav-inner { display: flex; align-items: center; gap: 16px; min-height: 68px; }
+.logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; color: var(--ink); text-decoration: none; letter-spacing: -.01em; }
+.logo svg { width: 36px; height: 36px; filter: drop-shadow(0 4px 10px rgba(37,99,235,.3)); }
+.nav-links { display: flex; align-items: center; gap: 24px; margin-left: auto; }
+.nav-links a:not(.btn) { color: var(--muted); text-decoration: none; font-weight: 600; font-size: .95rem; }
+.nav-links a:not(.btn):hover { color: var(--brand); }
+.menu-btn { display: none; margin-left: auto; width: 42px; height: 42px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+
+/* Hero */
+.hero { position: relative; padding: 72px 0 72px; overflow: hidden;
+  background: radial-gradient(900px 420px at 90% -10%, rgba(124,58,237,.16), transparent 60%), radial-gradient(700px 380px at -10% 20%, rgba(37,99,235,.14), transparent 60%), radial-gradient(500px 300px at 60% 110%, rgba(236,72,153,.12), transparent 60%); }
+.hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: color-mix(in srgb, var(--brand) 10%, var(--surface)); color: var(--brand-2); font-weight: 700; font-size: .85rem; border: 1px solid color-mix(in srgb, var(--brand) 25%, transparent); }
+.hero h1 { font-size: clamp(2.2rem, 4.8vw, 3.5rem); margin: 20px 0 18px; letter-spacing: -.015em; word-spacing: .04em; }
+.hl { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lead { font-size: 1.16rem; color: var(--muted); max-width: 34em; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 24px; }
+.cta-row.center { justify-content: center; }
+.ticks { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); font-size: .95rem; }
+.ticks li { display: flex; align-items: center; gap: 6px; }
+.ticks svg { color: #10b981; }
+
+/* Hero mock: the real library */
+.mock { position: relative; }
+.mock-window { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; box-shadow: var(--shadow); overflow: hidden; }
+.mock-bar { display: flex; align-items: center; gap: 6px; padding: 10px 14px; border-bottom: 1px solid var(--line); background: var(--alt); font-size: .8rem; color: var(--muted); }
+.mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.mock-bar span { margin-left: 8px; }
+.mock-body { padding: 16px; }
+.mock-hero { background: #2563eb; color: #fff; border-radius: 12px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.mock-hero b { font-size: 1rem; }
+.mock-hero small { display: block; opacity: .85; font-size: .78rem; }
+.mock-hero .n { font-size: 1.6rem; font-weight: 800; color: #fbbf24; line-height: 1; text-align: right; }
+.mock-row-label { margin: 14px 0 8px; font-weight: 700; font-size: .85rem; }
+.covers { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+.covers img, .covers .ph { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,0,0,.15); display: block; background: var(--alt); }
+.mock-phone { position: absolute; right: -14px; bottom: -28px; width: 150px; background: #111; border-radius: 22px; padding: 8px; box-shadow: var(--shadow); }
+.mock-phone .scr { background: #f4ecd8; border-radius: 15px; padding: 14px 11px; color: #3b2f20; font-family: Georgia, serif; font-size: .6rem; line-height: 1.5; height: 210px; overflow: hidden; }
+.mock-phone .scr b { display: block; font-size: .75rem; margin-bottom: 6px; }
+.mock-phone .bar { height: 3px; background: #e2d6b8; border-radius: 3px; margin-bottom: 8px; }
+.mock-phone .bar i { display: block; height: 100%; width: 42%; background: #2563eb; border-radius: 3px; }
+
+/* Trust strip */
+.trust { border-block: 1px solid var(--line); background: var(--surface); }
+.trust-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 28px; padding: 18px 16px; color: var(--muted); font-weight: 600; font-size: .95rem; }
+.trust-row span { display: flex; align-items: center; gap: 8px; }
+.trust-row svg { color: var(--brand); }
+
+/* Sections */
+.section { padding: 84px 0; }
+.section.alt { background: var(--alt); }
+.section-head { text-align: center; max-width: 700px; margin: 0 auto 44px; }
+.section-head.left { text-align: left; margin: 0; }
+.eyebrow { display: inline-block; font-weight: 800; font-size: .8rem; text-transform: uppercase; letter-spacing: .1em; color: var(--brand); margin-bottom: 10px; }
+.section-head h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom: 12px; }
+.section-head p { color: var(--muted); font-size: 1.08rem; }
+
+/* Collection */
+.shelves { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.shelf-card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+.shelf-card header { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+.shelf-card h3 { font-size: 1.15rem; }
+.shelf-card .count { font-weight: 800; color: var(--brand); white-space: nowrap; }
+.shelf-card p { color: var(--muted); font-size: .95rem; }
+.mini { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: auto; }
+.mini img, .mini .ph { width: 100%; aspect-ratio: 2/3; object-fit: cover; border-radius: 5px; display: block; background: var(--alt); }
+.titles { font-size: .85rem; color: var(--muted); }
+.titles b { color: var(--ink); font-weight: 600; }
+
+/* Features */
+.features { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.feature { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+.f-ico { display: grid; place-items: center; width: 46px; height: 46px; border-radius: 12px; background: color-mix(in srgb, var(--brand) 14%, transparent); color: var(--brand); margin-bottom: 14px; }
+.f-ico svg { width: 24px; height: 24px; }
+.feature h3 { font-size: 1.1rem; margin-bottom: 8px; }
+.feature p { color: var(--muted); font-size: .97rem; }
+
+/* Steps */
+.steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; counter-reset: s; }
+.steps li { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 24px; }
+.num { display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: var(--accent); color: #2b2000; font-weight: 800; margin-bottom: 14px; }
+.steps h3 { font-size: 1.08rem; margin-bottom: 8px; }
+.steps p { color: var(--muted); font-size: .96rem; }
+
+/* Pricing */
+.billing { display: flex; justify-content: center; margin: -18px 0 32px; }
+.toggle { display: inline-flex; padding: 4px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line); }
+.toggle button { border: 0; background: transparent; color: var(--muted); font: inherit; font-weight: 700; font-size: .92rem; padding: 8px 18px; border-radius: 999px; cursor: pointer; }
+.toggle button[aria-pressed="true"] { background: var(--brand); color: #fff; }
+:root[data-theme="dark"] .toggle button[aria-pressed="true"] { color: #0b1120; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .toggle button[aria-pressed="true"] { color: #0b1120; } }
+.save { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: var(--accent); color: #2b2000; font-size: .72rem; }
+.plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
+.plan { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 28px 24px; display: flex; flex-direction: column; }
+.plan.featured { border: 2px solid var(--brand); box-shadow: var(--shadow); }
+.ribbon { position: absolute; top: -13px; left: 24px; background: var(--accent); color: #2b2000; font-weight: 800; font-size: .78rem; padding: 4px 12px; border-radius: 999px; }
+.plan h3 { font-size: 1.3rem; }
+.plan-for { color: var(--muted); font-size: .95rem; margin-top: 4px; }
+.price { margin: 18px 0 4px; font-size: 2.6rem; font-weight: 800; letter-spacing: -.02em; line-height: 1; }
+.price small { font-size: 1rem; font-weight: 600; color: var(--muted); letter-spacing: 0; }
+.price-note { color: var(--muted); font-size: .88rem; min-height: 1.4em; }
+.plan ul { list-style: none; padding: 0; margin: 20px 0 24px; display: grid; gap: 10px; }
+.plan li { position: relative; padding-left: 28px; font-size: .97rem; }
+.plan li svg { position: absolute; left: 0; top: .2em; color: var(--brand); }
+.plan .btn { margin-top: auto; }
+.paystack { display: flex; gap: 16px; align-items: flex-start; margin-top: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 20px 22px; }
+.ps-ico { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: color-mix(in srgb, var(--brand) 14%, transparent); color: var(--brand); flex: none; }
+.paystack p { color: var(--muted); font-size: .95rem; margin-top: 4px; }
+
+/* FAQ */
+.faq-wrap { display: grid; grid-template-columns: 1fr 2fr; gap: 48px; }
+.faq details { border-bottom: 1px solid var(--line); padding: 16px 0; }
+.faq summary { cursor: pointer; font-weight: 700; list-style: none; display: flex; justify-content: space-between; gap: 16px; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; color: var(--brand); font-size: 1.4rem; line-height: 1; }
+.faq details[open] summary::after { content: "−"; }
+.faq details p { color: var(--muted); margin-top: 10px; }
+
+/* CTA + footer */
+.cta { background: #2563eb; color: #fff; padding: 72px 0; text-align: center; }
+:root[data-theme="dark"] .cta { background: #1e3a8a; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cta { background: #1e3a8a; } }
+.cta h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom: 12px; }
+.cta p { opacity: .9; max-width: 560px; margin: 0 auto; }
+.contact-line { margin-top: 18px; font-size: .95rem; opacity: .9; }
+.contact-line a { color: #fff; font-weight: 700; }
+.footer { padding: 28px 0; border-top: 1px solid var(--line); }
+.footer-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
+.footer nav { display: flex; flex-wrap: wrap; gap: 18px; margin-left: auto; }
+.footer nav a { color: var(--muted); text-decoration: none; font-weight: 600; font-size: .92rem; }
+.footer small { width: 100%; color: var(--muted); }
+
+/* Checkout dialog */
+.checkout { border: 0; padding: 0; border-radius: 20px; width: min(460px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); background: var(--surface); color: var(--ink); box-shadow: 0 30px 80px rgba(0,0,0,.35); }
+.checkout::backdrop { background: rgba(10,20,16,.55); }
+.co-close-form { position: absolute; top: 10px; right: 10px; }
+.co-close { width: 38px; height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font-size: 1.4rem; line-height: 1; cursor: pointer; }
+.co-body { padding: 28px 24px 22px; display: flex; flex-direction: column; }
+.co-ico { display: grid; place-items: center; width: 44px; height: 44px; border-radius: 12px; background: color-mix(in srgb, var(--brand) 14%, transparent); color: var(--brand); }
+.co-body h2 { margin: 12px 0 2px; font-size: 1.35rem; }
+.co-price { font-size: 2rem; font-weight: 800; margin: 2px 0 10px; }
+.co-price small { font-size: .95rem; color: var(--muted); font-weight: 600; }
+.co-off { background: #fde8e8; color: #8a1c1c; border-radius: 10px; padding: 10px 12px; font-size: .9rem; margin-bottom: 10px; }
+.co-off code { font-size: .85rem; background: rgba(0,0,0,.06); padding: 1px 5px; border-radius: 5px; }
+.co-off a { color: inherit; font-weight: 700; }
+.co-test { background: #fff4d6; color: #5a4100; border-radius: 10px; padding: 8px 12px; font-size: .88rem; font-weight: 600; margin-bottom: 10px; }
+.co-methods { border: 0; padding: 0; margin: 0 0 12px; display: grid; gap: 8px; }
+.co-methods legend { font-weight: 700; font-size: .92rem; margin-bottom: 8px; }
+.co-method { display: flex; gap: 10px; align-items: flex-start; border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; cursor: pointer; }
+.co-method:has(input:checked) { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 7%, transparent); }
+.co-method input { margin-top: 4px; accent-color: var(--brand); }
+.co-method b { display: block; font-size: .96rem; }
+.co-method small { color: var(--muted); font-size: .84rem; line-height: 1.4; display: block; }
+.co-body label[for] { font-weight: 600; font-size: .88rem; margin: 8px 0 4px; display: block; }
+.co-body input:not([type=radio]) { width: 100%; font: inherit; font-size: 1rem; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+.co-body input:not([type=radio]):focus { outline: 2px solid var(--brand); border-color: var(--brand); }
+.co-two { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.co-error { background: #fde8e8; color: #8a1c1c; border-radius: 10px; padding: 8px 12px; font-size: .9rem; margin-top: 10px; }
+#co-pay { margin-top: 14px; }
+#co-pay:disabled { opacity: .7; cursor: wait; }
+.co-legal { font-size: .8rem; color: var(--muted); text-align: center; margin-top: 10px; }
+.test-banner { background: #fff4d6; color: #5a4100; text-align: center; font-size: .88rem; font-weight: 600; padding: 6px 12px; }
+@media (max-width: 460px) { .co-two { grid-template-columns: 1fr; } }
+
+/* ---------- Bright, professional finish ---------- */
+.mock-window { border-radius: 20px; box-shadow: 0 30px 60px rgba(37,99,235,.18), 0 2px 6px rgba(15,23,42,.06); }
+.mock-bar i:nth-child(1) { background: #f87171; } .mock-bar i:nth-child(2) { background: #fbbf24; } .mock-bar i:nth-child(3) { background: #34d399; }
+.mock-hero { background: var(--grad) !important; border-radius: 14px; }
+.mock-phone { box-shadow: 0 24px 50px rgba(15,23,42,.3); }
+.trust { background: var(--alt); }
+.trust-row svg { color: var(--brand); }
+.trust-row span:nth-child(2) svg { color: var(--c2); } .trust-row span:nth-child(3) svg { color: var(--c5); } .trust-row span:nth-child(4) svg { color: var(--c3); }
+.section.alt { background: var(--alt); }
+.eyebrow { color: var(--violet); background: color-mix(in srgb, var(--violet) 10%, transparent); padding: 4px 12px; border-radius: 999px; letter-spacing: .08em; }
+.section-head h2 { letter-spacing: -.012em; }
+.shelf-card, .feature, .steps li, .plan, .paystack { border-radius: 20px; box-shadow: var(--shadow-sm); transition: transform .2s, box-shadow .2s; }
+.shelf-card:hover, .feature:hover, .steps li:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.shelf-card { border-top: 5px solid var(--c1); }
+.shelf-card:nth-child(2) { border-top-color: var(--c2); } .shelf-card:nth-child(3) { border-top-color: var(--c3); }
+.shelf-card:nth-child(4) { border-top-color: var(--c4); } .shelf-card:nth-child(5) { border-top-color: var(--c5); } .shelf-card:nth-child(6) { border-top-color: var(--c6); }
+.shelf-card .count { color: var(--muted); background: var(--alt); padding: 2px 10px; border-radius: 999px; font-size: .85rem; }
+.feature { --c: var(--c1); }
+.feature:nth-child(2) { --c: var(--c2); } .feature:nth-child(3) { --c: var(--c3); } .feature:nth-child(4) { --c: var(--c4); } .feature:nth-child(5) { --c: var(--c5); } .feature:nth-child(6) { --c: var(--c6); }
+.f-ico { background: var(--c); color: #fff; border-radius: 14px; box-shadow: 0 8px 18px color-mix(in srgb, var(--c) 35%, transparent); }
+.num { background: var(--grad); color: #fff; box-shadow: var(--shadow-brand); }
+.toggle button[aria-pressed="true"] { background: var(--grad); }
+.save { background: #fde047; color: #713f12; }
+.plan.featured { border: 2px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--grad) border-box; box-shadow: 0 24px 50px rgba(109,40,217,.18); transform: translateY(-6px); }
+.ribbon { background: var(--grad); color: #fff; box-shadow: var(--shadow-brand); }
+.plan li svg { color: #10b981; }
+.price { background: linear-gradient(135deg, var(--ink), var(--ink)); -webkit-background-clip: text; background-clip: text; }
+.plan.featured .price span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.ps-ico { background: color-mix(in srgb, var(--c5) 15%, transparent); color: var(--c5); }
+.faq details { padding: 18px 0; }
+.faq summary::after { color: var(--violet); }
+.cta { background: radial-gradient(600px 300px at 15% 0%, rgba(253,224,71,.25), transparent 60%), var(--grad) !important; }
+.co-ico { background: var(--grad) !important; color: #fff !important; }
+.co-method:has(input:checked) { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, transparent); }
+.test-banner { background: linear-gradient(90deg, #fde047, #fbbf24); color: #422006; }
+
+@media (max-width: 980px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 56px; }
+  .mock-phone { right: 4px; }
+  .shelves, .features { grid-template-columns: repeat(2, 1fr); }
+  .steps { grid-template-columns: repeat(2, 1fr); }
+  .plans { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+  .plan.featured { transform: none; }
+  .faq-wrap { grid-template-columns: 1fr; gap: 20px; }
+}
+@media (max-width: 760px) {
+  .menu-btn { display: grid; place-items: center; }
+  .nav-links { display: none; position: absolute; top: 64px; left: 0; right: 0; flex-direction: column; align-items: stretch; gap: 0; padding: 8px 16px 16px; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .nav-links.open { display: flex; }
+  .nav-links a:not(.btn) { padding: 12px 0; border-bottom: 1px solid var(--line); }
+  .nav-links .btn { margin-top: 12px; }
+  .hero { padding: 40px 0 56px; }
+  .section { padding: 60px 0; }
+  .shelves, .features, .steps { grid-template-columns: 1fr; }
+  .mock-phone { width: 120px; bottom: -36px; }
+  .mock-phone .scr { height: 170px; }
+  .covers { grid-template-columns: repeat(4, 1fr); }
+  .covers > :nth-child(5) { display: none; }
+}
+</style>
+</head>
+<body>
+<!-- Icons -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6 9 17l-5-5"/></symbol>
+  <symbol id="i-wifi-off" viewBox="0 0 24 24"><path d="M2 2l20 20M8.5 16.5a5 5 0 0 1 7 0M2 8.8a15 15 0 0 1 4.2-2.7M10.7 5.1A15 15 0 0 1 22 8.8M5 12.9a10 10 0 0 1 5.2-2.8M19 12.9a10 10 0 0 0-2.3-1.6M12 20h.01"/></symbol>
+  <symbol id="i-book" viewBox="0 0 24 24"><path d="M2 4h7a3 3 0 0 1 3 3v13a2 2 0 0 0-2-2H2zM22 4h-7a3 3 0 0 0-3 3v13a2 2 0 0 1 2-2h8z"/></symbol>
+  <symbol id="i-devices" viewBox="0 0 24 24"><rect x="2" y="4" width="14" height="11" rx="2"/><path d="M6 19h6"/><rect x="17" y="8" width="5" height="12" rx="1.5"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></symbol>
+  <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></symbol>
+  <symbol id="i-type" viewBox="0 0 24 24"><path d="M4 7V4h16v3M9 20h6M12 4v16"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+  <symbol id="i-scale" viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 7l-3 7a4 4 0 0 0 6 0zM19 7l-3 7a4 4 0 0 0 6 0zM8 21h8"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+  <symbol id="i-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+</svg>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="logo" href="#top">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2563eb"/><path d="M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z" fill="#fbbf24"/></svg>
+      <span data-name>School eLibrary</span>
+    </a>
+    <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><svg class="i"><use href="#i-menu"/></svg></button>
+    <nav id="nav-links" class="nav-links">
+      <a href="#collection">Collection</a>
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="login.html" data-signin>Sign in</a>
+      <a class="btn btn-sm" href="#pricing">Get started</a>
+    </nav>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="pill"><svg class="i"><use href="#i-book"/></svg> Built for digital classrooms</span>
+        <h1>A whole library on every student's device. <span class="hl">Even offline.</span></h1>
+        <p class="lead">Novels, folktales, comics, poetry, textbooks and an encyclopedia in one simple app. It works on laptops, tablets and phones, with no ads, and no internet needed for reading. Each student gets their own simple login, created by your school.</p>
+        <div class="cta-row">
+          <a class="btn" href="#pricing">Start for your school</a>
+          <a class="btn btn-ghost" href="login.html" data-signin>Sign in</a>
+        </div>
+        <ul class="ticks">
+          <li><svg class="i"><use href="#i-check"/></svg> <span><strong data-stat="books">150</strong>+ books included</span></li>
+          <li><svg class="i"><use href="#i-check"/></svg> Free to start</li>
+          <li><svg class="i"><use href="#i-check"/></svg> <span>Paid plans from <strong data-price-from>GH₵150</strong>/month</span></li>
+        </ul>
+      </div>
+
+      <div class="mock" aria-hidden="true">
+        <div class="mock-window">
+          <div class="mock-bar"><i></i><i></i><i></i><span data-name>School eLibrary</span></div>
+          <div class="mock-body">
+            <div class="mock-hero">
+              <div><b>Welcome to the library</b><small>Pick a book and start reading</small></div>
+              <div><div class="n" data-stat="books">150</div><small>books</small></div>
+            </div>
+            <div class="mock-row-label">📖 Novels</div>
+            <div class="covers" data-covers="novels"></div>
+            <div class="mock-row-label">🎨 Comics &amp; Picture Books</div>
+            <div class="covers" data-covers="comics"></div>
+          </div>
+        </div>
+        <div class="mock-phone">
+          <div class="scr">
+            <div class="bar"><i></i></div>
+            <b>Treasure Island</b>
+            Squire Trelawney, Dr. Livesey, and the rest of these gentlemen having asked me to write down the whole particulars about Treasure Island, from the beginning to the end, keeping nothing back but the bearings of the island…
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST -->
+  <section class="trust">
+    <div class="wrap trust-row">
+      <span><svg class="i"><use href="#i-wifi-off"/></svg> Reads without internet</span>
+      <span><svg class="i"><use href="#i-devices"/></svg> Any device with a browser</span>
+      <span><svg class="i"><use href="#i-scale"/></svg> 100% legal, public-domain books</span>
+      <span><svg class="i"><use href="#i-lock"/></svg> No ads, no tracking</span>
+    </div>
+  </section>
+
+  <!-- COLLECTION -->
+  <section id="collection" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">The collection</span>
+        <h2>From picture books to calculus</h2>
+        <p>A hand-picked collection for every age group and subject, with African folktales alongside the classics.</p>
+      </div>
+      <div class="shelves" id="shelves"></div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Features</span>
+        <h2>Simple enough for Basic 1. Useful all the way to SHS.</h2>
+        <p>Everything students need to find a book and keep reading, and nothing that gets in the way.</p>
+      </div>
+      <div class="features">
+        <article class="feature"><span class="f-ico"><svg class="i"><use href="#i-wifi-off"/></svg></span><h3>Works offline</h3><p>Every book, cover and illustration is stored on the device. Students can read in class, at home or on the bus with no data costs.</p></article>
+        <article class="feature"><span class="f-ico"><svg class="i"><use href="#i-search"/></svg></span><h3>Instant search</h3><p>Find any book by title, author or topic. Browse by section, filter textbooks by subject, and sort A–Z.</p></article>
+        <article class="feature"><span class="f-ico"><svg class="i"><use href="#i-type"/></svg></span><h3>Comfortable reader</h3><p>Bigger or smaller text, and light, sepia or dark pages. Illustrated books keep their original pictures.</p></article>
+        <article class="feature"><span class="f-ico"><svg class="i"><use href="#i-bookmark"/></svg></span><h3>Picks up where you stopped</h3><p>The library remembers each student's place in every book. Favourites go on "My Shelf" with one tap.</p></article>
+        <article class="feature"><span class="f-ico"><svg class="i"><use href="#i-globe"/></svg></span><h3>Built-in encyclopedia</h3><p>Look up any topic in Simple English or full Wikipedia without leaving the library. Kid-friendly topic shortcuts included.</p></article>
+        <article class="feature"><span class="f-ico"><svg class="i"><use href="#i-plus"/></svg></span><h3>Grows with your school</h3><p>Add any of 70,000+ free books with one command. Links to OpenStax, African Storybook and other free libraries are included.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section id="how" class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">How it works</span>
+        <h2>Up and running in a day</h2>
+      </div>
+      <ol class="steps">
+        <li><span class="num">1</span><h3>Choose a plan</h3><p>Pay securely with Mobile Money or card, then create your school admin account straight away.</p></li>
+        <li><span class="num">2</span><h3>We set it up</h3><p>We add your school's name and book list, and put the library online or onto your devices.</p></li>
+        <li><span class="num">3</span><h3>Give students their logins</h3><p>Paste your class lists into your dashboard. Every student gets a username and an easy password, ready to print on login cards.</p></li>
+        <li><span class="num">4</span><h3>New books every term</h3><p>Tell us what your classes are reading and we add it to the library before the term begins.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section id="pricing" class="section alt">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow">Pricing</span>
+        <h2>Simple plans for every school</h2>
+        <p>No setup fees. Cancel any time, and you keep access until the end of the period you paid for.</p>
+      </div>
+      <div class="billing">
+        <div class="toggle" role="group" aria-label="Billing period">
+          <button type="button" data-period="month" aria-pressed="true">Monthly</button>
+          <button type="button" data-period="term" aria-pressed="false">Per term <span class="save">Save 10%</span></button>
+        </div>
+      </div>
+      <div class="plans">
+        <article class="plan">
+          <h3>Starter</h3>
+          <p class="plan-for">For trying it out or a single class</p>
+          <p class="price"><span data-price="starter">GH₵0</span><small data-per>/month</small></p>
+          <p class="price-note">Free forever</p>
+          <ul>
+            <li><svg class="i"><use href="#i-check"/></svg> The full offline library (<b data-stat="books">150</b>+ books)</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Copy to any device or USB stick</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Reader, search, My Shelf &amp; encyclopedia</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Self-setup guide</li>
+          </ul>
+          <a class="btn btn-ghost btn-block" href="#contact">Ask for the free copy</a>
+        </article>
+
+        <article class="plan featured">
+          <span class="ribbon">Most popular</span>
+          <h3>School</h3>
+          <p class="plan-for">For one school</p>
+          <p class="price"><span data-price="school">GH₵150</span><small data-per>/month</small></p>
+          <p class="price-note" data-note="school"></p>
+          <ul>
+            <li><svg class="i"><use href="#i-check"/></svg> Everything in Starter</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Online library with up to <b data-max="school">1,000</b> student logins</li>
+            <li><svg class="i"><use href="#i-check"/></svg> School dashboard: add students, print login cards, reset passwords</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Your school's name, logo and colours</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Up to <b>50</b> new books added each term, on request</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Setup on school devices &amp; WhatsApp support</li>
+          </ul>
+          <a class="btn btn-block" href="#contact" data-plan="School" data-checkout="school">Choose School</a>
+        </article>
+
+        <article class="plan">
+          <h3>Network</h3>
+          <p class="plan-for">For groups of schools or a district</p>
+          <p class="price"><span data-price="network">GH₵450</span><small data-per>/month</small></p>
+          <p class="price-note" data-note="network"></p>
+          <ul>
+            <li><svg class="i"><use href="#i-check"/></svg> Everything in School, for up to <b>5</b> schools</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Up to <b data-max="network">5,000</b> student logins</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Book lists matched to the GES curriculum</li>
+            <li><svg class="i"><use href="#i-check"/></svg> One teacher training session per term</li>
+            <li><svg class="i"><use href="#i-check"/></svg> Priority support</li>
+          </ul>
+          <a class="btn btn-ghost btn-block" href="#contact" data-plan="Network" data-checkout="network">Choose Network</a>
+        </article>
+      </div>
+      <div class="paystack">
+        <span class="ps-ico"><svg class="i"><use href="#i-card"/></svg></span>
+        <div>
+          <b>Easy, secure payment</b>
+          <p>Pay with Mobile Money (MTN, Telecel, AirtelTigo) or card on Paystack's secure checkout. We never see or store your card or Mobile Money details, and every payment is confirmed directly with Paystack. Billed in <span data-currency>GHS</span>, monthly or once per term. Monthly card payments renew automatically; Mobile Money and per-term payments are paid one period at a time. Need an invoice for a bank transfer? <a href="#contact">Contact us</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <div class="wrap faq-wrap">
+      <div class="section-head left">
+        <span class="eyebrow">FAQ</span>
+        <h2>Questions, answered</h2>
+      </div>
+      <div class="faq">
+        <details><summary>Is it legal to share these books with students?</summary><p>Yes. Every book in the library is in the public domain and comes from Project Gutenberg, so it is free to read, copy and share. Encyclopedia articles come from Wikipedia under an open license.</p></details>
+        <details><summary>Do students need internet?</summary><p>Not for reading. All books are stored with the library, so they work offline. Only the encyclopedia search and the "More Online" links need a connection.</p></details>
+        <details><summary>Which devices does it work on?</summary><p>Any device with a modern web browser: Android tablets and phones, iPads, Chromebooks, Windows and Mac laptops. Nothing needs to be installed.</p></details>
+        <details><summary>How do students sign in?</summary><p>Your school admin pastes in the class lists, and every student gets a username and an easy password like <i>mango-4821</i>. Students sign in with your school code, username and password. If someone forgets their password, the admin makes a new one in seconds. We only store each student's name and class. Reading progress stays on the device.</p></details>
+        <details><summary>Can we add our own books or class readers?</summary><p>Yes. Any of the 70,000+ free books on Project Gutenberg can be added. On the School and Network plans, we add up to 50 books each term for you on request.</p></details>
+        <details><summary>What happens if we stop paying?</summary><p>You keep the free Starter library forever. Hosting, branding and support stop at the end of the period you paid for.</p></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="contact">
+    <div class="wrap">
+      <h2>Ready to open your school's digital library?</h2>
+      <p>Try the free library today, or talk to us about setting it up for your school.</p>
+      <div class="cta-row center">
+        <a class="btn btn-light" href="#pricing">Get started</a>
+        <a class="btn btn-outline-light" id="contactBtn" href="#contact">Contact us</a>
+      </div>
+      <p class="contact-line" id="contactLine"></p>
+    </div>
+  </section>
+</main>
+
+<!-- Checkout: details, then Paystack's secure payment window -->
+<dialog id="checkout" class="checkout" aria-labelledby="co-title">
+  <form method="dialog" class="co-close-form"><button class="co-close" aria-label="Close" value="cancel">×</button></form>
+  <form id="co-form" class="co-body" novalidate>
+    <span class="co-ico"><svg class="i"><use href="#i-lock"/></svg></span>
+    <h2 id="co-title">School plan</h2>
+    <p class="co-price"><span id="co-price">GH₵150</span><small id="co-per">/month</small></p>
+    <p class="co-test" id="co-test" hidden>Test mode: no real money will be taken.</p>
+    <p class="co-off" id="co-off" role="status" hidden></p>
+    <fieldset class="co-methods">
+      <legend>How would you like to pay?</legend>
+      <label class="co-method"><input type="radio" name="co-method" value="momo" checked>
+        <span><b>Mobile Money</b><small id="co-momo-note">MTN, Telecel or AirtelTigo. Pays for one month at a time.</small></span></label>
+      <label class="co-method"><input type="radio" name="co-method" value="card">
+        <span><b>Card</b><small id="co-card-note">Visa or Mastercard. Renews automatically every month. Cancel any time.</small></span></label>
+    </fieldset>
+    <label for="co-school">School or organization name</label>
+    <input id="co-school" required maxlength="120" autocomplete="organization" placeholder="e.g. Brightfield Academy">
+    <div class="co-two">
+      <div><label for="co-name">Your name</label><input id="co-name" maxlength="80" autocomplete="name"></div>
+      <div><label for="co-phone">Phone / WhatsApp</label><input id="co-phone" type="tel" maxlength="20" autocomplete="tel" placeholder="024 000 0000"></div>
+    </div>
+    <label for="co-email">Email for your receipt</label>
+    <input id="co-email" type="email" required maxlength="120" autocomplete="email" placeholder="you@school.edu.gh">
+    <p id="co-error" class="co-error" role="alert" hidden></p>
+    <button type="submit" class="btn btn-block" id="co-pay">Continue to payment</button>
+    <p class="co-legal">Secure payment by <b>Paystack</b>. By continuing you agree to our <a href="terms.html" target="_blank" rel="noopener">Terms</a> and <a href="refunds.html" target="_blank" rel="noopener">Refund Policy</a>.</p>
+  </form>
+</dialog>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <a class="logo" href="#top">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2563eb"/><path d="M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z" fill="#fbbf24"/></svg>
+      <span data-name>School eLibrary</span>
+    </a>
+    <nav><a href="#pricing">Pricing</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="refunds.html">Refunds</a><a href="#contact">Contact</a><a href="login.html" data-signin>Sign in</a></nav>
+    <small>© <span data-year>2026</span> <span data-name>School eLibrary</span>. Books from Project Gutenberg (public domain). Payments processed by Paystack.</small>
+  </div>
+</footer>
+
+<script src="assets/catalog.js"></script>
+<script>
+(function () {
+  'use strict';
+  // Prices, contact details and payments are set on the server (server/.env).
+  // These are only used when the page is opened without the server (e.g. from a USB stick).
+  var CFG = {
+    currency: 'GHS', termMonths: 4, termDiscount: 10, payments: false, testMode: false,
+    plans: { school: { name: 'School', month: 15000, term: 54000 }, network: { name: 'Network', month: 45000, term: 162000 } },
+    contact: { name: 'School eLibrary', email: '', phone: '', whatsapp: '' }
+  };
+
+  var books = window.LIBRARY || [];
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function money(pesewas) {
+    var v = pesewas / 100, sym = CFG.currency === 'GHS' ? 'GH₵' : CFG.currency + ' ';
+    return sym + v.toLocaleString('en-GH', { minimumFractionDigits: v % 1 ? 2 : 0, maximumFractionDigits: 2 });
+  }
+
+  $$('[data-year]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
+  if (books.length) {
+    var shown = books.length >= 100 ? Math.floor(books.length / 10) * 10 : books.length;
+    $$('[data-stat="books"]').forEach(function (el) { el.textContent = shown; });
+  }
+
+  // Covers in the hero mock
+  function pick(cat, n) {
+    return books.filter(function (b) { return b.cat === cat && b.cover; }).slice(0, n);
+  }
+  function coverImg(b) { return '<img loading="lazy" src="books/' + b.id + '/cover.jpg" alt="">'; }
+  $$('[data-covers]').forEach(function (el) {
+    var list = pick(el.getAttribute('data-covers'), 5);
+    el.innerHTML = list.length ? list.map(coverImg).join('') : '<div class="ph"></div><div class="ph"></div><div class="ph"></div><div class="ph"></div><div class="ph"></div>';
+  });
+
+  // Collection cards
+  var SECTIONS = [
+    { key: 'novels', label: '📖 Novels', text: 'Adventure, mystery, science fiction and the great classics.' },
+    { key: 'stories', label: '🦊 Stories & Folktales', text: 'Fables, fairy tales, myths and folktales from West, East and South Africa.' },
+    { key: 'comics', label: '🎨 Comics & Picture Books', text: 'Fully illustrated picture books, comic strips and cartoons for young readers.' },
+    { key: 'poetry', label: '🎭 Poetry & Plays', text: 'Verse for children, Shakespeare and great poetry from around the world.' },
+    { key: 'textbooks', label: '🧮 Textbooks', text: 'Maths, Science, History, Geography and English, from first steps to calculus.' },
+    { key: 'reference', label: '🌍 Encyclopedia', text: 'Online encyclopedia search plus encyclopedias, a thesaurus and reference books.' }
+  ];
+  document.getElementById('shelves').innerHTML = SECTIONS.map(function (s) {
+    var list = books.filter(function (b) { return b.cat === s.key; });
+    var withCover = list.filter(function (b) { return b.cover; }).slice(0, 4);
+    var names = list.slice(0, 3).map(function (b) { return '<b>' + esc(b.title) + '</b>'; }).join(', ');
+    return '<article class="shelf-card"><header><h3>' + esc(s.label) + '</h3>' +
+      (list.length ? '<span class="count">' + list.length + ' books</span>' : '') + '</header>' +
+      '<p>' + esc(s.text) + '</p>' +
+      (names ? '<p class="titles">Including ' + names + '…</p>' : '') +
+      '<div class="mini">' + (withCover.length ? withCover.map(coverImg).join('') : '<div class="ph"></div><div class="ph"></div><div class="ph"></div><div class="ph"></div>') + '</div></article>';
+  }).join('');
+
+  // Pricing toggle
+  var period = 'month';
+  function setPeriod(p) {
+    period = p;
+    $$('[data-period]').forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-period') === p); });
+    $$('[data-price="starter"]').forEach(function (el) { el.textContent = money(0); });
+    Object.keys(CFG.plans).forEach(function (k) {
+      var pl = CFG.plans[k];
+      $$('[data-price="' + k + '"]').forEach(function (el) { el.textContent = money(pl[p]); });
+      $$('[data-note="' + k + '"]').forEach(function (el) {
+        el.textContent = p === 'term' ? 'Billed once per term (' + CFG.termMonths + ' months). You save ' + money(pl.month * CFG.termMonths - pl.term) + '.' : 'Billed monthly';
+      });
+    });
+    $$('[data-per]').forEach(function (el) { el.textContent = p === 'term' ? '/term' : '/month'; });
+  }
+  $$('[data-period]').forEach(function (b) { b.addEventListener('click', function () { setPeriod(b.getAttribute('data-period')); }); });
+
+  // Everything that depends on the server's settings
+  function applyConfig() {
+    var c = CFG.contact;
+    $$('[data-name]').forEach(function (el) { el.textContent = c.name; });
+    $$('[data-currency]').forEach(function (el) { el.textContent = CFG.currency; });
+    $$('[data-price-from]').forEach(function (el) { el.textContent = money(CFG.plans.school.month); });
+    $$('[data-max]').forEach(function (el) { var p = CFG.plans[el.getAttribute('data-max')]; if (p && p.maxStudents) el.textContent = p.maxStudents.toLocaleString('en-GH'); });
+    $$('.save').forEach(function (el) { el.textContent = 'Save ' + CFG.termDiscount + '%'; el.hidden = !CFG.termDiscount; });
+    setPeriod(period);
+
+    var line = document.getElementById('contactLine'), btn = document.getElementById('contactBtn');
+    var parts = [];
+    if (c.whatsapp) parts.push('WhatsApp <a href="https://wa.me/' + esc(c.whatsapp) + '" target="_blank" rel="noopener">+' + esc(c.whatsapp) + '</a>');
+    if (c.phone) parts.push('Call <a href="tel:' + esc(c.phone.replace(/\s/g, '')) + '">' + esc(c.phone) + '</a>');
+    if (c.email) parts.push('Email <a href="mailto:' + esc(c.email) + '">' + esc(c.email) + '</a>');
+    line.innerHTML = parts.join(' · ');
+    btn.hidden = !(c.whatsapp || c.email);
+    if (c.whatsapp) { btn.href = 'https://wa.me/' + c.whatsapp; btn.target = '_blank'; btn.rel = 'noopener'; }
+    else if (c.email) btn.href = 'mailto:' + c.email;
+
+    // Without online payments, "Choose" opens WhatsApp or email instead of checkout.
+    $$('[data-plan]').forEach(function (a) {
+      var msg = 'Hello, we are interested in the ' + a.getAttribute('data-plan') + ' plan for the ' + c.name + '.';
+      if (c.whatsapp) { a.href = 'https://wa.me/' + c.whatsapp + '?text=' + encodeURIComponent(msg); a.target = '_blank'; a.rel = 'noopener'; }
+      else if (c.email) a.href = 'mailto:' + c.email + '?subject=' + encodeURIComponent(a.getAttribute('data-plan') + ' plan') + '&body=' + encodeURIComponent(msg);
+    });
+    if (CFG.testMode && !document.querySelector('.test-banner')) {
+      var tb = document.createElement('div');
+      tb.className = 'test-banner';
+      tb.textContent = 'Payments are in TEST mode. No real money is taken.';
+      document.body.insertBefore(tb, document.body.firstChild);
+    }
+    document.getElementById('co-test').hidden = !CFG.testMode;
+  }
+  applyConfig();
+  if (location.protocol !== 'file:') {
+    fetch('/api/config').then(function (r) { return r.ok ? r.json() : null; }).then(function (d) {
+      if (d && d.plans) { CFG = d; applyConfig(); }
+    }).catch(function () { /* page works without it */ });
+  }
+
+  // ---- Checkout: plan -> details -> Paystack pop-up -> confirmation page ----
+  var dialog = document.getElementById('checkout'), coForm = document.getElementById('co-form');
+  var coPay = document.getElementById('co-pay'), coErr = document.getElementById('co-error');
+  var chosen = null, admin = null;
+  // A signed-in school admin renews their own school's plan instead of starting a new school.
+  if (location.protocol !== 'file:') {
+    fetch('/api/session').then(function (r) { return r.json(); }).then(function (s) {
+      if (!s || !s.kind) return;
+      $$('[data-signin]').forEach(function (a) {
+        a.textContent = s.kind === 'admin' ? 'Dashboard' : 'Open library';
+        a.href = s.kind === 'admin' ? 'admin.html' : 'index.html';
+      });
+      if (s.kind !== 'admin') return;
+      admin = s;
+      var school = document.getElementById('co-school');
+      school.value = s.org.name;
+      school.parentNode.querySelector('label[for=co-school]').hidden = true;
+      school.hidden = true;
+      document.getElementById('co-email').value = s.email;
+      $$('[data-checkout]').forEach(function (a) { a.textContent = 'Renew with ' + CFG.plans[a.getAttribute('data-checkout')].name; });
+      if (/[?&]renew=1/.test(location.search)) {
+        var head = document.querySelector('#pricing .section-head p');
+        if (head) head.textContent = 'Renewing for ' + s.org.name + '. Your current plan: ' + s.org.planName + ', paid until ' + new Date(s.org.paidUntil).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }) + '. A new payment adds time from that date.';
+      }
+    }).catch(function () {});
+  }
+  var ERRORS = {
+    bad_email: 'Please enter a valid email address.',
+    bad_school: 'Please enter your school or organization name.',
+    bad_plan: 'Please choose a plan again.',
+    too_many: 'Too many attempts. Please wait a few minutes and try again.',
+    payments_off: 'Online payment is not available right now. Please contact us instead.',
+    paystack_unavailable: 'We couldn’t reach Paystack. Check your connection and try again.'
+  };
+  function showErr(m) { coErr.textContent = m; coErr.hidden = !m; }
+  function method() { var r = coForm.querySelector('input[name=co-method]:checked'); return r ? r.value : 'momo'; }
+  function updateNotes() {
+    var term = period === 'term';
+    document.getElementById('co-momo-note').textContent = 'MTN, Telecel or AirtelTigo. Pays for ' + (term ? 'one term (' + CFG.termMonths + ' months)' : 'one month') + ' at a time. We remind you before it ends.';
+    document.getElementById('co-card-note').textContent = term ? 'Visa or Mastercard. One payment for the whole term.' : 'Visa or Mastercard. Renews automatically every month. Cancel any time.';
+  }
+  function loadPaystack() {
+    if (window.PaystackPop) return Promise.resolve(true);
+    return new Promise(function (resolve) {
+      var s = document.createElement('script');
+      var timer = setTimeout(function () { resolve(false); }, 10000);
+      s.src = 'https://js.paystack.co/v2/inline.js';
+      s.onload = function () { clearTimeout(timer); resolve(!!window.PaystackPop); };
+      s.onerror = function () { clearTimeout(timer); resolve(false); };
+      document.head.appendChild(s);
+    });
+  }
+  $$('[data-checkout]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      if (!dialog.showModal) return; // very old browser: follow the contact link instead
+      // While online payments are switched off, the window still opens and explains why.
+      var off = document.getElementById('co-off');
+      off.hidden = !!CFG.payments;
+      coPay.disabled = !CFG.payments;
+      if (!CFG.payments) {
+        var local = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname) || location.protocol === 'file:';
+        var c = CFG.contact || {};
+        var reach = c.whatsapp ? '<a href="https://wa.me/' + esc(c.whatsapp) + '" target="_blank" rel="noopener">WhatsApp us</a>'
+          : c.email ? '<a href="mailto:' + esc(c.email) + '">email us</a>' : 'contact us';
+        off.innerHTML = local
+          ? '<b>Payments are not switched on yet.</b> Add your Paystack test key (<code>sk_test_…</code>) to <code>server/.env</code> after <code>PAYSTACK_SECRET_KEY=</code>, then restart the website.' +
+            (location.protocol === 'file:' ? ' Also open the site through the server (<code>node server/server.js</code>), not as a file.' : '')
+          : 'Online payment is not available right now. Please ' + reach + ' and we will set up your plan.';
+      }
+      e.preventDefault();
+      chosen = a.getAttribute('data-checkout');
+      var pl = CFG.plans[chosen];
+      document.getElementById('co-title').textContent = (admin ? 'Renew: ' : '') + pl.name + ' plan';
+      document.getElementById('co-price').textContent = money(pl[period]);
+      document.getElementById('co-per').textContent = period === 'term' ? '/term' : '/month';
+      updateNotes();
+      showErr('');
+      dialog.showModal();
+      document.getElementById(admin ? 'co-email' : 'co-school').focus();
+    });
+  });
+  coForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    showErr('');
+    var body = {
+      plan: chosen, period: period, method: method(), renew: !!admin,
+      school: document.getElementById('co-school').value.trim(),
+      name: document.getElementById('co-name').value.trim(),
+      phone: document.getElementById('co-phone').value.trim(),
+      email: document.getElementById('co-email').value.trim()
+    };
+    if (body.school.length < 2 && !admin) { showErr(ERRORS.bad_school); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(body.email)) { showErr(ERRORS.bad_email); return; }
+    coPay.disabled = true;
+    coPay.textContent = 'Opening secure payment…';
+    fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
+      .then(function (res) { return res.json().catch(function () { return {}; }).then(function (r) { return { ok: res.ok, r: r }; }); })
+      .then(function (x) {
+        var r = x.r;
+        if (!x.ok) {
+          showErr(r.error === 'paystack_rejected' ? 'Paystack said: “' + r.detail + '”.' : ERRORS[r.error] || 'Something went wrong. Please try again.');
+          return;
+        }
+        // The claim token proves this browser paid; it creates the school's admin account next.
+        if (r.claimToken) { try { localStorage.setItem('elib_claim:' + r.reference, r.claimToken); } catch (err) { /* private mode */ } }
+        var done = 'thanks.html?reference=' + encodeURIComponent(r.reference);
+        return loadPaystack().then(function (ok) {
+          if (!ok) { location.href = r.authorizationUrl; return; }
+          dialog.close();
+          try {
+            new window.PaystackPop().resumeTransaction(r.accessCode, {
+              onSuccess: function () { location.href = done; },
+              onCancel: function () { dialog.showModal(); showErr('Payment window closed. No payment was taken. You can try again.'); },
+              onError: function () { location.href = r.authorizationUrl; }
+            });
+          } catch (err) { location.href = r.authorizationUrl; }
+        });
+      })
+      .catch(function () { showErr('We couldn’t connect. Check your internet connection and try again.'); })
+      .then(function () { coPay.disabled = false; coPay.textContent = 'Continue to payment'; });
+  });
+  coForm.addEventListener('change', function (e) { if (e.target.name === 'co-method') showErr(''); });
+
+  // Mobile menu
+  var menu = document.querySelector('.menu-btn'), links = document.getElementById('nav-links');
+  menu.addEventListener('click', function () {
+    var open = links.classList.toggle('open');
+    menu.setAttribute('aria-expanded', open);
+  });
+  links.addEventListener('click', function (e) { if (e.target.closest('a')) { links.classList.remove('open'); menu.setAttribute('aria-expanded', 'false'); } });
+})();
+</script>
+</body>
+</html>

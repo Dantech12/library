@@ -1,0 +1,26 @@
+/* Applied inside every book page to make it comfortable to read on any device. */
+html { -webkit-text-size-adjust: 100%; background: var(--page-bg, #fffdf8); }
+html body {
+  max-width: 40em !important;
+  margin: 0 auto !important;
+  padding: 1.5em 1.1em 5em !important;
+  font-family: Georgia, "Iowan Old Style", "Palatino Linotype", "Times New Roman", serif !important;
+  font-size: var(--book-fs, 19px) !important;
+  line-height: 1.65 !important;
+  color: var(--page-ink, #1f1d1a) !important;
+  background: var(--page-bg, #fffdf8) !important;
+  overflow-wrap: break-word;
+}
+html body p { text-align: left !important; }
+html body img { max-width: 100% !important; height: auto !important; }
+html body table { max-width: 100%; }
+html body pre { white-space: pre-wrap; font-size: .85em; }
+html body a { color: var(--page-link, #2563eb); }
+html body h1, html body h2, html body h3 { line-height: 1.25; font-family: inherit; color: inherit; }
+html body .fig, html body .figcenter, html body figure, html body div[style*="width"] { max-width: 100% !important; }
+html body hr { border: 0; border-top: 1px solid var(--page-line, #ddd5c4); }
+
+html[data-page="sepia"] { --page-bg: #f4ecd8; --page-ink: #3b2f20; --page-link: #7a4b12; --page-line: #d8c9a6; }
+html[data-page="dark"]  { --page-bg: #17191b; --page-ink: #dcdcd6; --page-link: #93c5fd; --page-line: #333; }
+html[data-page="dark"] body * { color: inherit !important; background-color: transparent !important; border-color: #3a3a3a !important; }
+html[data-page="dark"] img { filter: brightness(.9); }

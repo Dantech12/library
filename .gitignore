@@ -1,0 +1,6 @@
+server/.env
+data/
+tools/pg_catalog.csv
+tools/last-run.log
+node_modules/
+.claude/

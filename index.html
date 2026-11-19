@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>School eLibrary</title>
+<meta name="description" content="The school's digital library: novels, stories, comics, poetry, encyclopedias and textbooks.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z' fill='%23fbbf24'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="assets/style.css">
+<!-- Filled in by the server when a student or admin is signed in; left as-is in the offline copy. -->
+<meta name="elib-user" content="{{USER_KEY}}">
+<meta name="elib-user-name" content="{{USER_NAME}}">
+<meta name="elib-user-kind" content="{{USER_KIND}}">
+<meta name="elib-school" content="{{SCHOOL_NAME}}">
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#home" aria-label="Library home">
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="var(--brand)"/><path d="M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z" fill="var(--accent)"/></svg>
+      <span id="libName">School eLibrary</span>
+    </a>
+    <form class="search" id="searchForm" role="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+      <input id="searchInput" type="search" placeholder="Search books, authors, topics…" autocomplete="off" aria-label="Search the library">
+    </form>
+    <div class="user-box" id="userBox" hidden>
+      <span class="user-name" id="userName"></span>
+      <a class="user-link" id="adminLink" href="admin.html" hidden>Dashboard</a>
+      <button class="user-link" id="signOut" type="button">Sign out</button>
+    </div>
+    <button class="icon-btn" id="themeBtn" title="Switch light / dark" aria-label="Switch light or dark mode">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+  <nav class="tabs" id="tabs" aria-label="Sections"></nav>
+</header>
+
+<main id="view" tabindex="-1"></main>
+
+<footer class="foot">
+  <p>All books in this library are in the public domain and come from <strong>Project Gutenberg</strong>. They are free to read, copy and share.
+  The Encyclopedia search uses <strong>Wikipedia</strong> and needs an internet connection.</p>
+</footer>
+
+<!-- Book reader -->
+<div class="reader" id="reader" hidden>
+  <div class="reader-bar">
+    <button class="icon-btn" id="rClose" aria-label="Close book" title="Back to library">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="reader-title"><strong id="rTitle"></strong><span id="rAuthor"></span></div>
+    <div class="reader-tools">
+      <button class="tool" id="rSmaller" title="Smaller text" aria-label="Smaller text">A−</button>
+      <button class="tool" id="rBigger" title="Bigger text" aria-label="Bigger text">A+</button>
+      <button class="tool" id="rTheme" title="Page colour" aria-label="Change page colour">◐</button>
+      <button class="tool" id="rFav" title="Add to My Shelf" aria-label="Add to My Shelf">♡</button>
+    </div>
+  </div>
+  <div class="reader-progress"><div id="rProgress"></div></div>
+  <iframe id="rFrame" title="Book"></iframe>
+  <article class="wiki-article" id="wikiArticle" hidden></article>
+</div>
+
+<script src="assets/catalog.js"></script>
+<script src="assets/app.js"></script>
+</body>
+</html>
