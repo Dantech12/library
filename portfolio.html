@@ -2,34 +2,28 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="color-scheme" content="light">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>School eLibrary — a digital library for every student</title>
-<meta name="description" content="A ready-made digital library for schools: novels, folktales, comics, poetry, textbooks and an encyclopedia. Works offline on any device. Free to start, from GH₵150/month for hosting and support.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232563eb'/%3E%3Cpath d='M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z' fill='%23fbbf24'/%3E%3C/svg%3E">
+<title>BookBridge — a digital library for every student</title>
+<meta name="description" content="A ready-made digital library for schools: novels, folktales, comics, poetry, textbooks and an encyclopedia. Works offline on any device. Free to start, from GH₵300/month for hosting and support.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231f2937'/%3E%3Cpath d='M10 38Q32 8 54 38' fill='none' stroke='white' stroke-width='4.5' stroke-linecap='round'/%3E%3Cpath d='M21 27v11M32 23v15M43 27v11' fill='none' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3Cpath d='M10 45c7-4.5 15-4.5 22 0c7-4.5 15-4.5 22 0' fill='none' stroke='%23f97316' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
 <style>
 @import url("assets/fonts.css");
 :root {
-  --brand: #2563eb; --brand-2: #1d4ed8; --violet: #7c3aed; --accent: #fbbf24; --accent-ink: #92400e;
-  --bg: #ffffff; --alt: #f5f7ff; --surface: #fff; --ink: #0f172a; --muted: #475569; --line: #e2e8f0;
-  --grad: linear-gradient(135deg, #2563eb 0%, #6d28d9 60%, #db2777 100%);
-  --shadow-sm: 0 1px 2px rgba(15,23,42,.06);
-  --shadow: 0 1px 2px rgba(15,23,42,.06), 0 14px 36px rgba(15,23,42,.10);
-  --shadow-brand: 0 10px 28px rgba(37,99,235,.28);
-  --c1: #2563eb; --c2: #f97316; --c3: #ec4899; --c4: #8b5cf6; --c5: #10b981; --c6: #0ea5e9;
+  --brand: #ea580c; --brand-2: #c2410c; --violet: #c2410c; --accent: #ea580c; --accent-ink: #9a3412; --charcoal: #1f2937;
+  --bg: #ffffff; --alt: #f9fafb; --surface: #fff; --ink: #111827; --muted: #4b5563; --line: #e5e7eb;
+  --grad: #ea580c;
+  --shadow-sm: 0 1px 2px rgba(17,24,39,.05);
+  --shadow: 0 1px 2px rgba(17,24,39,.05), 0 12px 30px rgba(17,24,39,.08);
+  --shadow-brand: none;
+  --c1: #ea580c; --c2: #ea580c; --c3: #ea580c; --c4: #ea580c; --c5: #ea580c; --c6: #ea580c;
   color-scheme: light;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --brand: #60a5fa; --brand-2: #93c5fd; --violet: #a78bfa; --accent: #fbbf24; --accent-ink: #fbbf24;
-    --bg: #0b1120; --alt: #0f172a; --surface: #111827; --ink: #f1f5f9; --muted: #94a3b8; --line: #1f2a3d;
-    --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 36px rgba(0,0,0,.4); --shadow-brand: 0 10px 28px rgba(0,0,0,.45);
-    color-scheme: dark;
-  }
-}
 :root[data-theme="dark"] {
-  --brand: #60a5fa; --brand-2: #93c5fd; --violet: #a78bfa; --accent: #fbbf24; --accent-ink: #fbbf24;
-  --bg: #0b1120; --alt: #0f172a; --surface: #111827; --ink: #f1f5f9; --muted: #94a3b8; --line: #1f2a3d;
-  --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 14px 36px rgba(0,0,0,.4); --shadow-brand: 0 10px 28px rgba(0,0,0,.45);
+  --brand: #fb923c; --brand-2: #fdba74; --violet: #fdba74; --accent: #fb923c; --accent-ink: #fdba74; --charcoal: #1a1d23; --grad: #f97316;
+  --bg: #0f1115; --alt: #14161b; --surface: #17191e; --ink: #f3f4f6; --muted: #9ca3af; --line: #2a2e35;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,.4); --shadow: 0 1px 2px rgba(0,0,0,.4), 0 12px 30px rgba(0,0,0,.4);
+  --c1: #fb923c; --c2: #fb923c; --c3: #fb923c; --c4: #fb923c; --c5: #fb923c; --c6: #fb923c;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
@@ -43,14 +37,14 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 :focus-visible { outline: 3px solid #f59e0b; outline-offset: 2px; border-radius: 8px; }
 
 /* Buttons */
-.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 12px; border: 0; background: var(--grad); color: #fff; font-weight: 700; text-decoration: none; font-size: 1rem; cursor: pointer; box-shadow: var(--shadow-brand); transition: transform .15s, box-shadow .15s, background .15s; }
-.btn:hover { transform: translateY(-1px); box-shadow: 0 14px 32px rgba(37,99,235,.36); }
-.btn-ghost { background: var(--surface); color: var(--brand-2); box-shadow: inset 0 0 0 1.5px var(--line), var(--shadow-sm); }
-.btn-ghost:hover { background: var(--alt); box-shadow: inset 0 0 0 1.5px var(--brand), var(--shadow-sm); color: var(--brand-2); }
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 24px; border-radius: 10px; border: 0; background: var(--brand); color: #fff; font-weight: 700; text-decoration: none; font-size: 1rem; cursor: pointer; transition: background .15s; }
+.btn:hover { background: #c2410c; }
+.btn-ghost { background: var(--surface); color: var(--ink); box-shadow: inset 0 0 0 1.5px var(--line); }
+.btn-ghost:hover { background: var(--alt); box-shadow: inset 0 0 0 1.5px var(--ink), var(--shadow-sm); color: var(--ink); }
 .btn-block { width: 100%; }
 .btn-sm { padding: 9px 16px; font-size: .92rem; border-radius: 10px; }
-.btn-light { background: #fde047; color: #1e1b4b; box-shadow: 0 10px 28px rgba(0,0,0,.18); }
-.btn-light:hover { background: #fef08a; }
+.btn-light { background: #ea580c; color: #fff; }
+.btn-light:hover { background: #f97316; }
 .btn-outline-light { background: transparent; color: #fff; box-shadow: inset 0 0 0 1.5px rgba(255,255,255,.7); }
 .btn-outline-light:hover { background: rgba(255,255,255,.12); }
 
@@ -58,25 +52,24 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 .nav { position: sticky; top: 0; z-index: 10; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: saturate(1.5) blur(14px); border-bottom: 1px solid var(--line); }
 .nav-inner { display: flex; align-items: center; gap: 16px; min-height: 68px; }
 .logo { display: flex; align-items: center; gap: 10px; font-weight: 800; font-size: 1.15rem; color: var(--ink); text-decoration: none; letter-spacing: -.01em; }
-.logo svg { width: 36px; height: 36px; filter: drop-shadow(0 4px 10px rgba(37,99,235,.3)); }
+.logo svg { width: 36px; height: 36px; }
 .nav-links { display: flex; align-items: center; gap: 24px; margin-left: auto; }
 .nav-links a:not(.btn) { color: var(--muted); text-decoration: none; font-weight: 600; font-size: .95rem; }
 .nav-links a:not(.btn):hover { color: var(--brand); }
 .menu-btn { display: none; margin-left: auto; width: 42px; height: 42px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
 
 /* Hero */
-.hero { position: relative; padding: 72px 0 72px; overflow: hidden;
-  background: radial-gradient(900px 420px at 90% -10%, rgba(124,58,237,.16), transparent 60%), radial-gradient(700px 380px at -10% 20%, rgba(37,99,235,.14), transparent 60%), radial-gradient(500px 300px at 60% 110%, rgba(236,72,153,.12), transparent 60%); }
+.hero { position: relative; padding: 76px 0 76px; overflow: hidden; background: var(--alt); border-bottom: 1px solid var(--line); }
 .hero-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 56px; align-items: center; }
-.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: color-mix(in srgb, var(--brand) 10%, var(--surface)); color: var(--brand-2); font-weight: 700; font-size: .85rem; border: 1px solid color-mix(in srgb, var(--brand) 25%, transparent); }
+.pill { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 999px; background: var(--surface); color: var(--ink); font-weight: 700; font-size: .85rem; border: 1px solid var(--line); }
 .hero h1 { font-size: clamp(2.2rem, 4.8vw, 3.5rem); margin: 20px 0 18px; letter-spacing: -.015em; word-spacing: .04em; }
-.hl { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hl { color: var(--brand); }
 .lead { font-size: 1.16rem; color: var(--muted); max-width: 34em; }
 .cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 28px 0 24px; }
 .cta-row.center { justify-content: center; }
 .ticks { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 8px 22px; color: var(--muted); font-size: .95rem; }
 .ticks li { display: flex; align-items: center; gap: 6px; }
-.ticks svg { color: #10b981; }
+.ticks svg { color: var(--brand); }
 
 /* Hero mock: the real library */
 .mock { position: relative; }
@@ -85,7 +78,7 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 .mock-bar i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
 .mock-bar span { margin-left: 8px; }
 .mock-body { padding: 16px; }
-.mock-hero { background: #2563eb; color: #fff; border-radius: 12px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+.mock-hero { background: #1f2937; color: #fff; border-radius: 12px; padding: 14px 16px; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
 .mock-hero b { font-size: 1rem; }
 .mock-hero small { display: block; opacity: .85; font-size: .78rem; }
 .mock-hero .n { font-size: 1.6rem; font-weight: 800; color: #fbbf24; line-height: 1; text-align: right; }
@@ -96,7 +89,7 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 .mock-phone .scr { background: #f4ecd8; border-radius: 15px; padding: 14px 11px; color: #3b2f20; font-family: Georgia, serif; font-size: .6rem; line-height: 1.5; height: 210px; overflow: hidden; }
 .mock-phone .scr b { display: block; font-size: .75rem; margin-bottom: 6px; }
 .mock-phone .bar { height: 3px; background: #e2d6b8; border-radius: 3px; margin-bottom: 8px; }
-.mock-phone .bar i { display: block; height: 100%; width: 42%; background: #2563eb; border-radius: 3px; }
+.mock-phone .bar i { display: block; height: 100%; width: 42%; background: #ea580c; border-radius: 3px; }
 
 /* Trust strip */
 .trust { border-block: 1px solid var(--line); background: var(--surface); }
@@ -146,7 +139,6 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 .toggle button { border: 0; background: transparent; color: var(--muted); font: inherit; font-weight: 700; font-size: .92rem; padding: 8px 18px; border-radius: 999px; cursor: pointer; }
 .toggle button[aria-pressed="true"] { background: var(--brand); color: #fff; }
 :root[data-theme="dark"] .toggle button[aria-pressed="true"] { color: #0b1120; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .toggle button[aria-pressed="true"] { color: #0b1120; } }
 .save { display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: var(--accent); color: #2b2000; font-size: .72rem; }
 .plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; align-items: stretch; }
 .plan { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: 20px; padding: 28px 24px; display: flex; flex-direction: column; }
@@ -175,9 +167,8 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 .faq details p { color: var(--muted); margin-top: 10px; }
 
 /* CTA + footer */
-.cta { background: #2563eb; color: #fff; padding: 72px 0; text-align: center; }
+.cta { background: #1f2937; color: #fff; padding: 72px 0; text-align: center; }
 :root[data-theme="dark"] .cta { background: #1e3a8a; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .cta { background: #1e3a8a; } }
 .cta h2 { font-size: clamp(1.7rem, 3.4vw, 2.4rem); margin-bottom: 12px; }
 .cta p { opacity: .9; max-width: 560px; margin: 0 auto; }
 .contact-line { margin-top: 18px; font-size: .95rem; opacity: .9; }
@@ -221,40 +212,38 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 @media (max-width: 460px) { .co-two { grid-template-columns: 1fr; } }
 
 /* ---------- Bright, professional finish ---------- */
-.mock-window { border-radius: 20px; box-shadow: 0 30px 60px rgba(37,99,235,.18), 0 2px 6px rgba(15,23,42,.06); }
+.mock-window { border-radius: 18px; box-shadow: var(--shadow); }
 .mock-bar i:nth-child(1) { background: #f87171; } .mock-bar i:nth-child(2) { background: #fbbf24; } .mock-bar i:nth-child(3) { background: #34d399; }
-.mock-hero { background: var(--grad) !important; border-radius: 14px; }
+.mock-hero { background: #1f2937 !important; border-radius: 12px; border-top: 4px solid #ea580c; }
+.mock-hero .n { color: #fb923c !important; }
 .mock-phone { box-shadow: 0 24px 50px rgba(15,23,42,.3); }
 .trust { background: var(--alt); }
 .trust-row svg { color: var(--brand); }
 .trust-row span:nth-child(2) svg { color: var(--c2); } .trust-row span:nth-child(3) svg { color: var(--c5); } .trust-row span:nth-child(4) svg { color: var(--c3); }
 .section.alt { background: var(--alt); }
-.eyebrow { color: var(--violet); background: color-mix(in srgb, var(--violet) 10%, transparent); padding: 4px 12px; border-radius: 999px; letter-spacing: .08em; }
+.eyebrow { color: var(--brand-2); letter-spacing: .1em; }
 .section-head h2 { letter-spacing: -.012em; }
 .shelf-card, .feature, .steps li, .plan, .paystack { border-radius: 20px; box-shadow: var(--shadow-sm); transition: transform .2s, box-shadow .2s; }
 .shelf-card:hover, .feature:hover, .steps li:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
-.shelf-card { border-top: 5px solid var(--c1); }
-.shelf-card:nth-child(2) { border-top-color: var(--c2); } .shelf-card:nth-child(3) { border-top-color: var(--c3); }
-.shelf-card:nth-child(4) { border-top-color: var(--c4); } .shelf-card:nth-child(5) { border-top-color: var(--c5); } .shelf-card:nth-child(6) { border-top-color: var(--c6); }
-.shelf-card .count { color: var(--muted); background: var(--alt); padding: 2px 10px; border-radius: 999px; font-size: .85rem; }
+.shelf-card { border-top: 4px solid var(--charcoal); }
+.shelf-card .count { color: var(--muted); background: var(--alt); padding: 2px 10px; border-radius: 999px; font-size: .85rem; border: 1px solid var(--line); }
 .feature { --c: var(--c1); }
 .feature:nth-child(2) { --c: var(--c2); } .feature:nth-child(3) { --c: var(--c3); } .feature:nth-child(4) { --c: var(--c4); } .feature:nth-child(5) { --c: var(--c5); } .feature:nth-child(6) { --c: var(--c6); }
-.f-ico { background: var(--c); color: #fff; border-radius: 14px; box-shadow: 0 8px 18px color-mix(in srgb, var(--c) 35%, transparent); }
-.num { background: var(--grad); color: #fff; box-shadow: var(--shadow-brand); }
+.f-ico { background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); border-radius: 12px; }
+.num { background: var(--charcoal); color: #fff; }
 .toggle button[aria-pressed="true"] { background: var(--grad); }
-.save { background: #fde047; color: #713f12; }
-.plan.featured { border: 2px solid transparent; background: linear-gradient(var(--surface), var(--surface)) padding-box, var(--grad) border-box; box-shadow: 0 24px 50px rgba(109,40,217,.18); transform: translateY(-6px); }
-.ribbon { background: var(--grad); color: #fff; box-shadow: var(--shadow-brand); }
-.plan li svg { color: #10b981; }
-.price { background: linear-gradient(135deg, var(--ink), var(--ink)); -webkit-background-clip: text; background-clip: text; }
-.plan.featured .price span { background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.save { background: #ffedd5; color: #9a3412; }
+.plan.featured { border: 2px solid var(--brand); box-shadow: var(--shadow); transform: translateY(-6px); }
+.ribbon { background: var(--brand); color: #fff; }
+.plan li svg { color: var(--brand); }
+.plan.featured .price span { color: var(--brand); }
 .ps-ico { background: color-mix(in srgb, var(--c5) 15%, transparent); color: var(--c5); }
 .faq details { padding: 18px 0; }
 .faq summary::after { color: var(--violet); }
-.cta { background: radial-gradient(600px 300px at 15% 0%, rgba(253,224,71,.25), transparent 60%), var(--grad) !important; }
-.co-ico { background: var(--grad) !important; color: #fff !important; }
+.cta { background: #1f2937 !important; border-top: 5px solid #ea580c; }
+.co-ico { background: color-mix(in srgb, var(--brand) 14%, transparent) !important; color: var(--brand) !important; }
 .co-method:has(input:checked) { border-color: var(--brand); background: color-mix(in srgb, var(--brand) 8%, transparent); }
-.test-banner { background: linear-gradient(90deg, #fde047, #fbbf24); color: #422006; }
+.test-banner { background: #ffedd5; color: #7c2d12; border-bottom: 1px solid #fed7aa; }
 
 @media (max-width: 980px) {
   .hero-grid { grid-template-columns: 1fr; gap: 56px; }
@@ -302,8 +291,8 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 <header class="nav">
   <div class="wrap nav-inner">
     <a class="logo" href="#top">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2563eb"/><path d="M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z" fill="#fbbf24"/></svg>
-      <span data-name>School eLibrary</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1f2937"/><path d="M10 38Q32 8 54 38" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/><path d="M21 27v11M32 23v15M43 27v11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M10 45c7-4.5 15-4.5 22 0c7-4.5 15-4.5 22 0" fill="none" stroke="#f97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-name>BookBridge</span>
     </a>
     <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu"><svg class="i"><use href="#i-menu"/></svg></button>
     <nav id="nav-links" class="nav-links">
@@ -333,13 +322,13 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
         <ul class="ticks">
           <li><svg class="i"><use href="#i-check"/></svg> <span><strong data-stat="books">150</strong>+ books included</span></li>
           <li><svg class="i"><use href="#i-check"/></svg> Free to start</li>
-          <li><svg class="i"><use href="#i-check"/></svg> <span>Paid plans from <strong data-price-from>GH₵150</strong>/month</span></li>
+          <li><svg class="i"><use href="#i-check"/></svg> <span>Paid plans from <strong data-price-from>GH₵300</strong>/month</span></li>
         </ul>
       </div>
 
       <div class="mock" aria-hidden="true">
         <div class="mock-window">
-          <div class="mock-bar"><i></i><i></i><i></i><span data-name>School eLibrary</span></div>
+          <div class="mock-bar"><i></i><i></i><i></i><span data-name>BookBridge</span></div>
           <div class="mock-body">
             <div class="mock-hero">
               <div><b>Welcome to the library</b><small>Pick a book and start reading</small></div>
@@ -452,7 +441,7 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
           <span class="ribbon">Most popular</span>
           <h3>School</h3>
           <p class="plan-for">For one school</p>
-          <p class="price"><span data-price="school">GH₵150</span><small data-per>/month</small></p>
+          <p class="price"><span data-price="school">GH₵300</span><small data-per>/month</small></p>
           <p class="price-note" data-note="school"></p>
           <ul>
             <li><svg class="i"><use href="#i-check"/></svg> Everything in Starter</li>
@@ -468,7 +457,7 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
         <article class="plan">
           <h3>Network</h3>
           <p class="plan-for">For groups of schools or a district</p>
-          <p class="price"><span data-price="network">GH₵450</span><small data-per>/month</small></p>
+          <p class="price"><span data-price="network">GH₵1,200</span><small data-per>/month</small></p>
           <p class="price-note" data-note="network"></p>
           <ul>
             <li><svg class="i"><use href="#i-check"/></svg> Everything in School, for up to <b>5</b> schools</li>
@@ -528,7 +517,7 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
   <form id="co-form" class="co-body" novalidate>
     <span class="co-ico"><svg class="i"><use href="#i-lock"/></svg></span>
     <h2 id="co-title">School plan</h2>
-    <p class="co-price"><span id="co-price">GH₵150</span><small id="co-per">/month</small></p>
+    <p class="co-price"><span id="co-price">GH₵300</span><small id="co-per">/month</small></p>
     <p class="co-test" id="co-test" hidden>Test mode: no real money will be taken.</p>
     <p class="co-off" id="co-off" role="status" hidden></p>
     <fieldset class="co-methods">
@@ -555,11 +544,11 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
 <footer class="footer">
   <div class="wrap footer-inner">
     <a class="logo" href="#top">
-      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#2563eb"/><path d="M14 18h14a6 6 0 0 1 6 6v24a5 5 0 0 0-5-5H14zM50 18H36a6 6 0 0 0-6 6v24a5 5 0 0 1 5-5h15z" fill="#fbbf24"/></svg>
-      <span data-name>School eLibrary</span>
+      <svg viewBox="0 0 64 64" aria-hidden="true"><rect width="64" height="64" rx="14" fill="#1f2937"/><path d="M10 38Q32 8 54 38" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round"/><path d="M21 27v11M32 23v15M43 27v11" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M10 45c7-4.5 15-4.5 22 0c7-4.5 15-4.5 22 0" fill="none" stroke="#f97316" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span data-name>BookBridge</span>
     </a>
     <nav><a href="#pricing">Pricing</a><a href="terms.html">Terms</a><a href="privacy.html">Privacy</a><a href="refunds.html">Refunds</a><a href="#contact">Contact</a><a href="login.html" data-signin>Sign in</a></nav>
-    <small>© <span data-year>2026</span> <span data-name>School eLibrary</span>. Books from Project Gutenberg (public domain). Payments processed by Paystack.</small>
+    <small>© <span data-year>2026</span> <span data-name>BookBridge</span>. Books from Project Gutenberg (public domain). Payments processed by Paystack.</small>
   </div>
 </footer>
 
@@ -571,8 +560,8 @@ svg.i { width: 1.15em; height: 1.15em; flex: none; stroke: currentColor; fill: n
   // These are only used when the page is opened without the server (e.g. from a USB stick).
   var CFG = {
     currency: 'GHS', termMonths: 4, termDiscount: 10, payments: false, testMode: false,
-    plans: { school: { name: 'School', month: 15000, term: 54000 }, network: { name: 'Network', month: 45000, term: 162000 } },
-    contact: { name: 'School eLibrary', email: '', phone: '', whatsapp: '' }
+    plans: { school: { name: 'School', month: 30000, term: 108000 }, network: { name: 'Network', month: 120000, term: 432000 } },
+    contact: { name: 'BookBridge', email: '', phone: '', whatsapp: '' }
   };
 
   var books = window.LIBRARY || [];

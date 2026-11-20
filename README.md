@@ -1,4 +1,4 @@
-# School eLibrary
+# BookBridge
 
 A digital library for students. It has novels, stories and folktales, comics and picture books, poetry and plays, textbooks, and an encyclopedia. It runs in any web browser, on laptops, tablets, phones and Chromebooks, and the books work **without internet**.
 
@@ -43,7 +43,7 @@ The tool downloads the new books with their pictures and covers, then updates th
 Open `assets/app.js` and change this line near the top:
 
 ```js
-var LIBRARY_NAME = 'School eLibrary';
+var LIBRARY_NAME = 'BookBridge';
 ```
 
 ## The website and payments
@@ -103,7 +103,7 @@ node server/admin-cli.js extend <code> <days>     add days, e.g. after a bank-tr
 1. **Activate your Paystack business.** In the Paystack dashboard, submit your business documents for go-live, and use your live website address. Paystack checks that the site shows your Terms, Privacy and Refund pages.
 2. **Put the folder on GitHub.** The books make it about 730 MB, which is fine for GitHub. Then on [Render](https://render.com) choose **New → Blueprint** and pick the repository. It reads `render.yaml`.
 3. **Fill in the settings Render asks for:**
-   - `PUBLIC_BASE_URL`: your Render address, for example `https://school-elibrary.onrender.com`.
+   - `PUBLIC_BASE_URL`: your Render address, for example `https://bookbridge.onrender.com`.
    - `PAYSTACK_SECRET_KEY`: start with the **test** key (`sk_test_...`).
    - `SUPPORT_EMAIL`, `SUPPORT_PHONE`, `SUPPORT_WHATSAPP` and `BUSINESS_ADDRESS`.
 4. **Add the webhook.** In Paystack → Settings → API Keys & Webhooks, set the webhook URL to `https://YOUR-SITE/api/paystack/webhook`.

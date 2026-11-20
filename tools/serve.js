@@ -1,5 +1,5 @@
 /*
-  Shares the eLibrary over the school network.
+  Shares BookBridge over the school network.
   Run from the library folder:   node tools/serve.js        (optional: a port, e.g. node tools/serve.js 8080)
   Students on the same Wi-Fi then open the address it prints.
 */
@@ -21,7 +21,7 @@ http.createServer((req, res) => {
     fs.createReadStream(file).pipe(res);
   });
 }).listen(PORT, () => {
-  console.log(`eLibrary is running. On this computer open: http://localhost:${PORT}`);
+  console.log(`BookBridge is running. On this computer open: http://localhost:${PORT}`);
   for (const list of Object.values(os.networkInterfaces()))
     for (const a of list || []) if (a.family === 'IPv4' && !a.internal) console.log(`Students on the same network open: http://${a.address}:${PORT}`);
 });

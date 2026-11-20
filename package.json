@@ -1,8 +1,8 @@
 {
-  "name": "school-elibrary",
+  "name": "bookbridge",
   "version": "1.0.0",
   "private": true,
-  "description": "School eLibrary website with Paystack payments",
+  "description": "BookBridge website with Paystack payments",
   "scripts": {
     "start": "node server/server.js",
     "add-books": "node tools/add-books.js",

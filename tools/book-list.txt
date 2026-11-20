@@ -1,4 +1,4 @@
-# Book list for the eLibrary. Each line: section name, then Gutenberg book numbers.
+# Book list for BookBridge. Each line: section name, then Gutenberg book numbers.
 # Sections: novels, stories, comics, poetry, reference, textbooks (textbooks take :Subject).
 novels 1342 11 12 120 74 76 514 84 1661 108 2852 2097 521 829 271 113 45 55 16 236 215 910 103 164 35 36 3836 730 1400 46 1260 1448 289 146 421 1257 1450 1874 778 1184 2701
 stories 2591 1597 19994 128 2781 2776 503 641 2306 573 976 48828 37472 38339 32921 2148 7439 22693 14241 20748 677 902

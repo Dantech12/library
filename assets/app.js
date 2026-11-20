@@ -1,9 +1,9 @@
-/* School eLibrary — runs fully in the browser, no server needed. */
+/* BookBridge — runs fully in the browser, no server needed. */
 (function () {
   'use strict';
 
   // ---- Settings the school can change ------------------------------------
-  var LIBRARY_NAME = 'School eLibrary';
+  var LIBRARY_NAME = 'BookBridge';
 
   var CATEGORIES = [
     { key: 'novels',    label: 'Novels',                 emoji: '📖', blurb: 'Classic novels: adventure, mystery, science fiction and more.' },
@@ -77,8 +77,7 @@
   // ---- Site theme -------------------------------------------------------------
   if (store.siteTheme) document.documentElement.setAttribute('data-theme', store.siteTheme);
   $('#themeBtn').addEventListener('click', function () {
-    var dark = document.documentElement.getAttribute('data-theme') === 'dark' ||
-      (!document.documentElement.getAttribute('data-theme') && matchMedia('(prefers-color-scheme: dark)').matches);
+    var dark = document.documentElement.getAttribute('data-theme') === 'dark';
     store.siteTheme = dark ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', store.siteTheme);
     save();
@@ -92,10 +91,10 @@
   }).join('');
 
   // ---- Covers & cards -------------------------------------------------------
-  var PALETTE = ['#2563eb', '#f97316', '#ec4899', '#8b5cf6', '#10b981', '#0ea5e9', '#ef4444', '#14b8a6', '#6366f1', '#f59e0b'];
+  var PALETTE = ['#1f2937', '#292524', '#27272a', '#1e293b', '#262626'];
   var COVER_COLOURS = {
-    novels: ['#2563eb', '#7c3aed'], stories: ['#f97316', '#e11d48'], comics: ['#ec4899', '#8b5cf6'],
-    poetry: ['#8b5cf6', '#2563eb'], textbooks: ['#10b981', '#0ea5e9'], reference: ['#0ea5e9', '#4f46e5']
+    novels: ['#1f2937', '#111827'], stories: ['#292524', '#1c1917'], comics: ['#27272a', '#18181b'],
+    poetry: ['#1e293b', '#0f172a'], textbooks: ['#262626', '#171717'], reference: ['#1f2937', '#0f172a']
   };
   function coverHTML(b) {
     var p = store.progress[b.id];
@@ -171,7 +170,7 @@
       .map(function (x) { return x.b; }).slice(0, 12);
 
     var pictures = BOOKS.filter(function (b) { return b.pictures; }).length;
-    var html = '<section class="hero"><div><h1>Welcome to the ' + esc(LIBRARY_NAME) + '</h1>' +
+    var html = '<section class="hero"><div><h1>Welcome to ' + esc(displayName) + '</h1>' +
       '<p>Pick a book and start reading. Everything here is free and works without internet. Use the search box to find a title, an author or a topic.</p></div>' +
       '<div class="stats"><div class="stat"><b>' + BOOKS.length + '</b><span>books</span></div>' +
       '<div class="stat"><b>' + CATEGORIES.length + '</b><span>sections</span></div>' +

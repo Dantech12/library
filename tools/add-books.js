@@ -1,5 +1,5 @@
 /*
-  Adds books to the eLibrary from Project Gutenberg (free, public-domain books).
+  Adds books to BookBridge from Project Gutenberg (free, public-domain books).
 
   1. Open tools/book-list.txt and add Gutenberg book numbers to the right line.
      (The number is in the book's web address, e.g. gutenberg.org/ebooks/1342 -> 1342.)
@@ -29,7 +29,7 @@ async function get(rel) {
 async function getOne(url, tries) {
   for (let i = 0; i < tries; i++) {
     try {
-      const r = await fetch(url, { headers: { 'User-Agent': 'school-elibrary/1.0' } });
+      const r = await fetch(url, { headers: { 'User-Agent': 'bookbridge/1.0' } });
       if (r.status == 404) return null; // the book or picture does not exist
       if (!r.ok) throw new Error('HTTP ' + r.status);
       return Buffer.from(await r.arrayBuffer());

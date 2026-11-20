@@ -1,5 +1,5 @@
 /*
-  eLibrary website: Paystack payments, school accounts and student sign-in.  No extra packages (Node 18+).
+  BookBridge website: Paystack payments, school accounts and student sign-in.  No extra packages (Node 18+).
 
   Start:   node server/server.js
   All settings come from environment variables (see server/.env.example).
@@ -27,12 +27,12 @@ const CFG = {
   paystackApi: (env.PAYSTACK_BASE_URL || 'https://api.paystack.co').replace(/\/+$/, ''),
   currency: env.BILLING_CURRENCY || 'GHS',
   // Amounts in pesewas (GH₵1 = 100 pesewas), like Paystack expects.
-  amounts: { school: int(env.PLAN_SCHOOL_AMOUNT, 15000), network: int(env.PLAN_NETWORK_AMOUNT, 45000) },
+  amounts: { school: int(env.PLAN_SCHOOL_AMOUNT, 30000), network: int(env.PLAN_NETWORK_AMOUNT, 120000) },
   maxStudents: { school: int(env.PLAN_SCHOOL_MAX_STUDENTS, 1000), network: int(env.PLAN_NETWORK_MAX_STUDENTS, 5000) },
   termMonths: int(env.TERM_MONTHS, 4),
   termDiscount: int(env.TERM_DISCOUNT_PERCENT, 10),
   business: {
-    name: env.BUSINESS_NAME || 'School eLibrary',
+    name: env.BUSINESS_NAME || 'BookBridge',
     email: env.SUPPORT_EMAIL || '',
     phone: env.SUPPORT_PHONE || '',
     whatsapp: (env.SUPPORT_WHATSAPP || '').replace(/[^\d]/g, ''),
@@ -602,7 +602,7 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(CFG.port, () => {
-  console.log(`eLibrary website running on http://localhost:${CFG.port}`);
+  console.log(`BookBridge website running on http://localhost:${CFG.port}`);
   console.log(`Accounts: ${Object.keys(db.orgs).length} schools, ${Object.keys(db.students).length} students.`);
   if (!paymentsOn()) console.log('Payments are OFF: set PAYSTACK_SECRET_KEY to turn them on.');
   else console.log(`Payments are ON (${testMode() ? 'TEST mode' : 'LIVE mode'}).`);
