@@ -191,6 +191,59 @@ async function confirmRenewal(reference, data) {
   logOrder({ event: 'renewed', reference, school: org.name, schoolCode: org.code, plan: planKey, amount: t.amount, email });
 }
 
+// Catch-up check: ask Paystack for recent successful payments and record any this website missed.
+// Covers monthly card renewals and customers who closed the page before returning, without relying on
+// the webhook (the Paystack account's webhook may point at another website). Safe to repeat: payments
+// already recorded are skipped. Other websites' payments on the same Paystack account are ignored.
+const RECONCILE_EVERY_MS = 15 * 60e3;
+const reconciled = new Set(); // references already looked at in this run of the website
+let reconciling = false;
+async function reconcile(days) {
+  if (!paymentsOn() || reconciling) return;
+  reconciling = true;
+  let found = 0;
+  try {
+    const from = new Date(Date.now() - days * S.DAY).toISOString();
+    const list = [];
+    for (let page = 1; page <= 20; page++) {
+      const res = await fetch(`${CFG.paystackApi}/transaction?status=success&perPage=100&page=${page}&from=${encodeURIComponent(from)}`,
+        { headers: { Authorization: 'Bearer ' + CFG.secretKey }, signal: AbortSignal.timeout(15000) });
+      const j = await res.json().catch(() => ({}));
+      if (!res.ok || !j.status) throw new Error(j.message || res.status);
+      list.push(...(j.data || []));
+      if (!j.meta || !j.meta.pageCount || page >= j.meta.pageCount) break;
+    }
+    // Oldest first, so a school's first payment is recorded before its renewals.
+    list.sort((a, b) => Date.parse(a.paid_at || a.paidAt || a.created_at || 0) - Date.parse(b.paid_at || b.paidAt || b.created_at || 0));
+    const ours = new Set(Object.values(planCodes));
+    for (const t of list) {
+      const ref = String(t.reference || '');
+      if (!ref || reconciled.has(ref)) continue;
+      const co = db.checkouts[ref];
+      const planCode = (t.plan && (t.plan.plan_code || (typeof t.plan === 'string' ? t.plan : ''))) || (t.plan_object && t.plan_object.plan_code) || '';
+      try {
+        if (co) {
+          if (!co.paid) { await confirm(ref); if (db.checkouts[ref] && db.checkouts[ref].paid) found++; }
+        } else if (planCode && ours.has(planCode)) {
+          await confirmRenewal(ref, t);
+          if (db.checkouts[ref]) found++;
+        } else {
+          reconciled.add(ref); // not this website's payment
+          continue;
+        }
+        reconciled.add(ref);
+      } catch (e) {
+        console.error(`Catch-up check could not confirm ${ref}:`, e.paystack || e.message); // tried again next time
+      }
+    }
+    if (found) console.log(`Catch-up check: recorded ${found} payment(s) that had not arrived yet.`);
+  } catch (e) {
+    console.error('Catch-up check with Paystack failed (will try again):', e.message);
+  } finally {
+    reconciling = false;
+  }
+}
+
 // ---------------------------------------------------------------- sessions
 function parseCookies(req) {
   const out = {};
@@ -623,5 +676,7 @@ function started() {
   if (!paymentsOn()) console.log('Payments are OFF: set PAYSTACK_SECRET_KEY to turn them on.');
   else console.log(`Payments are ON (${testMode() ? 'TEST mode' : 'LIVE mode'}).`);
   if (!CFG.baseUrl) console.log('Tip: set PUBLIC_BASE_URL to your site address so Paystack returns customers to the right page.');
-  ensurePlans();
+  // On start (including waking up on a free host), look back far enough to cover a monthly renewal; then keep checking.
+  ensurePlans().then(() => reconcile(40));
+  setInterval(() => reconcile(3), RECONCILE_EVERY_MS).unref();
 }

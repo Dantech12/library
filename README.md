@@ -64,6 +64,8 @@ Payments work like SafeTab's:
 
 Monthly card payments renew automatically through Paystack plans, which the server creates by itself. Mobile Money and per-term payments cover one period at a time.
 
+The server also runs a **catch-up check**. When it starts or wakes up, and every 15 minutes while it runs, it asks Paystack for recent successful payments and records any it missed: monthly renewals, and payments where the customer closed the page before coming back. So payments are recorded even without the webhook, for example when the Paystack account's webhook already points at another website. Payments that belong to other websites on the same Paystack account are ignored.
+
 Every payment is written to the payment log (the `orders` collection in MongoDB, or `orders.jsonl` in the data folder). Paystack's dashboard is the official record, and it emails you and the customer for every payment.
 
 Prices, contact details and the business name are settings, not code. See `server/.env.example`.
@@ -113,7 +115,7 @@ With MongoDB, run it on your own computer: run `npm install` once in the library
    - `MONGODB_URI`: the connection string from step 2.
    - `PAYSTACK_SECRET_KEY`: start with the **test** key (`sk_test_...`).
    - `SUPPORT_EMAIL`, `SUPPORT_PHONE`, `SUPPORT_WHATSAPP` and `BUSINESS_ADDRESS`.
-5. **Add the webhook.** In Paystack → Settings → API Keys & Webhooks, set the webhook URL to `https://YOUR-SITE/api/paystack/webhook`.
+5. **Add the webhook.** In Paystack → Settings → API Keys & Webhooks, set the webhook URL to `https://YOUR-SITE/api/paystack/webhook`. If the webhook is already used by another website on the same Paystack account, skip this: the catch-up check records BookBridge's payments anyway, just a little later.
 6. **Test it.** The site shows a yellow "TEST mode" banner. Buy a plan with Paystack's test card or test Mobile Money, and check that you land on "Payment received".
 7. **Go live.** Swap `PAYSTACK_SECRET_KEY` to the **live** key (`sk_live_...`) and save. The banner disappears, and real payments start.
 
