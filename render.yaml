@@ -5,22 +5,24 @@ services:
   - type: web
     name: bookbridge
     runtime: node
-    plan: starter         # always on, with a disk. REQUIRED: school accounts and student logins are stored on the disk.
+    # Free plan: no disk, and it sleeps after about 15 minutes without visitors (the next visit takes about a minute).
+    # The free plan's disk is wiped on every restart, so school accounts and student logins are kept
+    # in a free MongoDB Atlas database instead (MONGODB_URI below).
+    plan: free
     region: frankfurt     # closest Render region to West Africa
-    buildCommand: "true"  # nothing to build
+    buildCommand: npm install --omit=dev   # installs the mongodb driver
     startCommand: node server/server.js
     healthCheckPath: /healthz
-    disk:
-      name: data
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: NODE_ENV
         value: production
-      - key: DATA_DIR
-        value: /var/data
       - key: PUBLIC_BASE_URL          # e.g. https://bookbridge.onrender.com
         sync: false
+      # --- Accounts database (MongoDB Atlas, free M0 cluster) ---
+      - key: MONGODB_URI              # mongodb+srv://USER:PASSWORD@CLUSTER.mongodb.net/
+        sync: false
+      - key: MONGODB_DB
+        value: bookbridge
       # --- Payments (Paystack) ---
       - key: PAYSTACK_SECRET_KEY      # sk_test_... until you go live
         sync: false

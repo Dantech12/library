@@ -48,7 +48,7 @@ var LIBRARY_NAME = 'BookBridge';
 
 ## The website and payments
 
-The public website runs on `server/server.js`. It needs no extra packages, only Node.js 18 or newer.
+The public website runs on `server/server.js`. It needs Node.js 18 or newer. The only extra package is the MongoDB driver, used when accounts are kept in MongoDB (`npm install` gets it).
 
 - `/` is the portfolio and pricing page (`portfolio.html`).
 - `/index.html` is the library.
@@ -64,7 +64,7 @@ Payments work like SafeTab's:
 
 Monthly card payments renew automatically through Paystack plans, which the server creates by itself. Mobile Money and per-term payments cover one period at a time.
 
-Every payment is written to `orders.jsonl` in the data folder. Paystack's dashboard is the official record, and it emails you and the customer for every payment.
+Every payment is written to the payment log (the `orders` collection in MongoDB, or `orders.jsonl` in the data folder). Paystack's dashboard is the official record, and it emails you and the customer for every payment.
 
 Prices, contact details and the business name are settings, not code. See `server/.env.example`.
 
@@ -88,9 +88,12 @@ What happens as plans start and end:
 | Renewing | A signed-in admin renews from the dashboard. The new time is added after their current paid-until date. Monthly card subscriptions renew by themselves through Paystack's webhook. |
 | Plan ends | Students can sign in for 7 more days. After that they see "ask your school to renew". Their logins are kept, so nothing needs to be set up again. |
 
-Accounts are stored in `accounts.json` in the data folder. Back it up now and then.
+Where accounts are stored:
 
-**Support tool** (run on the server, for example in Render → Shell):
+- **MongoDB**, when `MONGODB_URI` is set. This is what the Render setup uses, because Render's free plan wipes its disk on every restart. Each school, admin, student, session and checkout is its own document in the `records` collection.
+- **A file**, `accounts.json` in the data folder, when `MONGODB_URI` is not set. Back it up now and then.
+
+**Support tool:**
 
 ```
 node server/admin-cli.js schools                  list schools, plans and admins
@@ -98,17 +101,21 @@ node server/admin-cli.js reset-admin <email>      new temporary password for a s
 node server/admin-cli.js extend <code> <days>     add days, e.g. after a bank-transfer payment
 ```
 
+With MongoDB, run it on your own computer: run `npm install` once in the library folder, and put the same `MONGODB_URI` in `server/.env`. With the file, run it on the server itself. The website picks up the change within about 10 seconds.
+
 ### Go-live checklist
 
 1. **Activate your Paystack business.** In the Paystack dashboard, submit your business documents for go-live, and use your live website address. Paystack checks that the site shows your Terms, Privacy and Refund pages.
-2. **Put the folder on GitHub.** The books make it about 730 MB, which is fine for GitHub. Then on [Render](https://render.com) choose **New → Blueprint** and pick the repository. It reads `render.yaml`.
-3. **Fill in the settings Render asks for:**
+2. **Make the free database.** On [MongoDB Atlas](https://www.mongodb.com/atlas), create a free **M0** cluster. Under **Database Access**, add a database user with a password. Under **Network Access**, allow `0.0.0.0/0`, because Render's free plan has no fixed address. Then **Connect → Drivers** shows the connection string, `mongodb+srv://...`. Put the user's password into it.
+3. **Put the folder on GitHub.** The books make it about 730 MB, which is fine for GitHub. Then on [Render](https://render.com) choose **New → Blueprint** and pick the repository. It reads `render.yaml`, which uses Render's **free** plan.
+4. **Fill in the settings Render asks for:**
    - `PUBLIC_BASE_URL`: your Render address, for example `https://bookbridge.onrender.com`.
+   - `MONGODB_URI`: the connection string from step 2.
    - `PAYSTACK_SECRET_KEY`: start with the **test** key (`sk_test_...`).
    - `SUPPORT_EMAIL`, `SUPPORT_PHONE`, `SUPPORT_WHATSAPP` and `BUSINESS_ADDRESS`.
-4. **Add the webhook.** In Paystack → Settings → API Keys & Webhooks, set the webhook URL to `https://YOUR-SITE/api/paystack/webhook`.
-5. **Test it.** The site shows a yellow "TEST mode" banner. Buy a plan with Paystack's test card or test Mobile Money, and check that you land on "Payment received".
-6. **Go live.** Swap `PAYSTACK_SECRET_KEY` to the **live** key (`sk_live_...`) and save. The banner disappears, and real payments start.
+5. **Add the webhook.** In Paystack → Settings → API Keys & Webhooks, set the webhook URL to `https://YOUR-SITE/api/paystack/webhook`.
+6. **Test it.** The site shows a yellow "TEST mode" banner. Buy a plan with Paystack's test card or test Mobile Money, and check that you land on "Payment received".
+7. **Go live.** Swap `PAYSTACK_SECRET_KEY` to the **live** key (`sk_live_...`) and save. The banner disappears, and real payments start.
 
 To check prices, run `node server/server.js` on your own computer first, after copying `server/.env.example` to `server/.env` and filling it in. Then open http://localhost:8080.
 

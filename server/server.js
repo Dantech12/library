@@ -1,5 +1,6 @@
 /*
-  BookBridge website: Paystack payments, school accounts and student sign-in.  No extra packages (Node 18+).
+  BookBridge website: Paystack payments, school accounts and student sign-in.  Node 18+.
+  No extra packages, except the mongodb driver when accounts are kept in MongoDB (MONGODB_URI).
 
   Start:   node server/server.js
   All settings come from environment variables (see server/.env.example).
@@ -69,14 +70,9 @@ function loadDotEnv(file) {
 }
 
 // ---------------------------------------------------------------- storage
-fs.mkdirSync(CFG.dataDir, { recursive: true });
-const store = S.createStore(CFG.dataDir);
-const db = store.db;
-store.watch();
-const ORDERS = path.join(CFG.dataDir, 'orders.jsonl');
-function logOrder(o) {
-  fs.appendFile(ORDERS, JSON.stringify({ at: new Date().toISOString(), ...o }) + '\n', (e) => e && console.error('order log:', e.message));
-}
+// Opened at start-up (see the bottom of this file): MongoDB if MONGODB_URI is set, else DATA_DIR/accounts.json.
+let store, db;
+function logOrder(o) { store.logOrder(o); }
 
 // ---------------------------------------------------------------- Paystack
 async function paystack(method, p, body) {
@@ -601,11 +597,31 @@ const server = http.createServer((req, res) => {
   serveStatic(req, res, url);
 });
 
-server.listen(CFG.port, () => {
+S.openStore(CFG.dataDir).then((s) => {
+  store = s;
+  db = s.db;
+  store.watch();
+  server.listen(CFG.port, started);
+}).catch((e) => {
+  console.error('Could not open the accounts store:', e.message);
+  process.exit(1);
+});
+
+// Save everything before the host stops or restarts the website.
+let stopping = false;
+for (const sig of ['SIGTERM', 'SIGINT']) process.on(sig, () => {
+  if (stopping) return;
+  stopping = true;
+  server.close();
+  Promise.resolve(store && store.close()).finally(() => process.exit(0));
+  setTimeout(() => process.exit(0), 8000).unref();
+});
+
+function started() {
   console.log(`BookBridge website running on http://localhost:${CFG.port}`);
-  console.log(`Accounts: ${Object.keys(db.orgs).length} schools, ${Object.keys(db.students).length} students.`);
+  console.log(`Accounts (${store.where}): ${Object.keys(db.orgs).length} schools, ${Object.keys(db.students).length} students.`);
   if (!paymentsOn()) console.log('Payments are OFF: set PAYSTACK_SECRET_KEY to turn them on.');
   else console.log(`Payments are ON (${testMode() ? 'TEST mode' : 'LIVE mode'}).`);
   if (!CFG.baseUrl) console.log('Tip: set PUBLIC_BASE_URL to your site address so Paystack returns customers to the right page.');
   ensurePlans();
-});
+}
